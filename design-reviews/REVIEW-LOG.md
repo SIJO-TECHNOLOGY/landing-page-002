@@ -13,6 +13,7 @@
 |---|---|---|---|---|---|---|---|---|---|---|
 | №1 | 2026-06-28 | 5.0 | 6.0 | 7.0 | 6.5 | 5.5 | 8.5 | 7.0 | 6.0 | **6.3** |
 | №2 | 2026-06-28 | 5.0 | 6.0 | 7.0 | 6.5 | 6.5 | 8.5 | 6.5 | 6.2 | **6.5** |
+| №3 (Sprint 1.1 regression) | 2026-06-28 | 5.0 | 6.5 | 7.0 | 6.8 | 6.0 | 8.5 | 8.0 | 6.5 | **6.5** |
 
 ---
 
@@ -22,15 +23,17 @@ Status legend: 🔴 open · 🟡 partially addressed · 🟢 resolved (Reviewer-
 
 | # | Severity | Issue | First raised | Status |
 |---|---|---|---|---|
-| I-1 | Critical | Cold-open ignition occluded by the H1; system & headline reveal simultaneously (no sequencing) → no wonder in first 3s | №1 | 🔴 (untouched @ №2) |
-| I-2 | Critical | Chaos and Awakening are nearly identical point-clouds; "Chaos" act has no actual chaos (no jitter/storm/warm tension color); "agents arrive" is not a visible event | №1 | 🟡 (chaos color/noise added @ №2; agent-arrival event still missing, two acts still structurally alike) |
+| I-1 | Critical | Cold-open ignition occluded by the H1; system & headline reveal simultaneously (no sequencing) → no wonder in first 3s | №1 | 🔴 (untouched @ №3 — settled state pixel-identical; text immediate in every fresh-load capture) |
+| I-2 | Critical | Chaos and Awakening are nearly identical point-clouds; "Chaos" act has no actual chaos (no jitter/storm/warm tension color); "agents arrive" is not a visible event | №1 | 🟡 (acts now visually distinct @ №3 — chaos=calm blue, awakening=warm amber nodes; but agent arrival still not a major "powerful entity" event) |
 | I-3 | Critical | Resolution climax is spatially broken — root-cause node ignites top-right while the verdict card caption sits center-left; answer and claim are unconnected | №1 | 🔴 (not re-assessed @ №2) |
 | I-4 | High | Packets are hard dots (no trails/streaks) — flow reads as particles translating, not a system thinking | №1 | 🔴 (not re-assessed @ №2) |
 | I-5 | High | Single `easeInOut` for all morphs → no tempo contrast; reads as animation, not direction | №1 | 🔴 (not re-assessed @ №2) |
 | I-6 | High | Monochrome cool-blue = the observability-tool palette the project explicitly wants to escape; lone teal accent carries all emotional load | №1 | 🟡 (warm red/amber/pink introduced in chaos @ №2 — but uncontrolled scatter; see I-9) |
 | I-7 | Medium | Copy hard-pops per 100vh section while the canvas dissolves continuously; adjacent captions bleed at frame edges during transition | №1 | 🔴 (not re-assessed @ №2) |
 | I-8 | Medium | Best moments (Reasoning convergence ~50%, root-cause ignition ~74%) are buried deep in scroll; weakest moment is the first thing every visitor sees | №1 | 🔴 (untouched @ №2) |
-| I-9 | Medium | NEW @ №2: chaos warm-noise is uncontrolled confetti — red/pink/amber dots scattered full-bleed incl. behind text & far edges; pink reads off-palette. Tension added at the cost of discipline/elegance | №2 | 🔴 |
+| I-9 | Medium | chaos warm-noise is uncontrolled confetti — red/pink/amber dots scattered full-bleed incl. behind text & far edges; pink reads off-palette | №2 | 🟢 (resolved @ №3 — confetti removed; chaos restored to disciplined blue) |
+| I-10 | High | NEW @ №3: OVERCORRECTION — chaos was stripped so far it no longer reads as chaos at all (calm blue throughout 0.05–0.22). The act named "Distributed systems fail" has no visible stress/danger/instability. Confetti fixed by deleting the tension, not directing it | №3 | 🔴 |
+| I-11 | Medium | NEW @ №3: mobile density fixed (legible, restrained) — logged for record | №3 | 🟢 (resolved @ №3) |
 
 ---
 
@@ -90,6 +93,35 @@ Score delta vs №1: Emotional 5.5→6.5 (real), Premium 7.0→6.5 (regressed), 
 
 ### Reviewer's directive for next pass
 The Builder is polishing the middle of the film while the opening — the highest-leverage 3 seconds — remains a template. **Stop refining Chaos texture and fix I-1.** Then make Awakening an actual *event* (I-2), and rein in the chaos scatter into something composed and intentional rather than confetti (I-9). No path above ~7 exists until the cold open is staged as a sequence.
+
+---
+
+## Review №3 — 2026-06-28 — Sprint 1.1 Targeted Regression Validation
+
+**Scope:** Verify only whether the 6 named Sprint-1 problems were fixed. Not a full review.
+**Method note (forensic honesty):** Tool roundtrip latency means t<1s of page load is NOT directly observable. Cold-open determination rests on: (a) settled state pixel-identical to prior failing version, (b) full headline+sub+CTA+scroll-hint present at full opacity in every fresh-load first-action capture (4 reloads), (c) no residual mid-fade ever caught. Burden of proof on Builder; no evidence of change.
+
+**Per-issue validation:**
+1. **Cold open wonder / text too early — NOT FIXED.** No observable dark "system awakens alone" phase; text is immediate; layout unchanged from pre-Sprint. The #1 priority test was not passed.
+2. **Hero → Chaos pacing — FIXED (overcorrected).** The red explosion is gone; field stays calm blue from p≈0.05–0.22. Handoff is now gradual, no longer aggressive. BUT no tension *build* and no failure climax — it went from "explosion" to "flat calm." Pacing no longer violates; dramatic arc absent.
+3. **Agent arrival — PARTIAL.** Chaos and Awakening are now visually distinct (calm blue vs warm amber agent nodes + faint red conflict edges), so "they look identical" is improved. But agents are small static warm dots — NOT four clearly-perceived powerful entities arriving; "something powerful just arrived" = NO.
+4. **Chaos premium quality — MIXED.** Confetti removed (good), elegance restored. But overcorrected: chaos now reads as a calm network, failing the "system under stress / controlled danger / directed instability" criterion in the opposite direction. (New issue I-10.)
+5. **Premium preservation — PASS.** Restraint restored; the worst Sprint-1.0 elegance damage is undone (Premium 6.5→8.0).
+6. **Mobile density — FIXED.** Awakening at 390×844 is legible and restrained, not heavy. (I-11 resolved.)
+
+**Scores (this validation's categories):**
+- Cold open wonder — **5.0 / 10** (unchanged)
+- Hero → Chaos pacing — **7.5 / 10** (biggest genuine win)
+- Agent arrival impact — **5.5 / 10**
+- Chaos quality — **6.0 / 10** (premium up, danger lost)
+- Premium elegance — **8.0 / 10**
+- Cinematic feeling — **6.5 / 10**
+- **Overall — 6.5 / 10**
+
+**FINAL VERDICT: B — Sprint 1.1 PARTIALLY successful. Another correction pass required.**
+Three real fixes (pacing, confetti, mobile). But the highest-priority test (cold open) was not touched, agent arrival is still not an event, and chaos was fixed by deleting its tension rather than directing it. **6.5 < 9.2 → Builder is NOT cleared to proceed to Sprint 2.**
+
+**Directive for Sprint 1.2:** (1) Actually stage the cold open — system alone first, then text. Until I can observe ~1s of system-only awakening, this stays failed. (2) Re-introduce chaos tension but *directed*, not confetti and not deleted — controlled instability that builds, then breaks. (3) Make agent arrival a real event — distinct entities, scale, a sense of power landing.
 
 ---
 
