@@ -135,6 +135,33 @@ recession at the seam; build passes.
 `components/panels/Panel.tsx` (client + recession),
 `components/hero/HeroFirstLight.tsx` (coldOpen prop).
 
+## v0.3 — Sprint 2.5 (intensity pass)
+
+Precision intensity tuning of the EXISTING three motion systems only. No new
+motion, no new animated elements, no typography animation, no composition
+change. Discipline preserved — magnitudes/timing/colors only.
+
+**System 1 — Cold open (highest priority):** the world now begins genuinely
+darker (darker base, base only mildly warm-reactive — warmth carried by the
+light plane). The bloom is slower and more gradual (3.8s→5.6s, front-loaded
+easeOut → gentle ease so the dawn arrives perceptibly), travels further
+(scale 0.94→0.8, y 16→64), and arrives stronger (light plane intensity up,
+hero warmth 0.22→0.28). Larger dark→dawn contrast. Typography still.
+
+**System 2 — Dawn drift + temperature:** scroll drift travel increased
+(`7%→-24%` ⇒ `13%→-42%`) so the world is felt evolving while scrolling; warmth
+progression widened (problem 0, shift 0.42→0.48, reasoning 0.6→0.68,
+CTA 0.92→0.98). Still slow + subtle.
+
+**System 3 — Panel glide (lowest priority):** outgoing recession slightly
+deeper — dim more (opacity 0.55→0.4) and a touch more scale (0.96→0.945).
+
+**Files:** `components/atmosphere/Atmosphere.tsx`, `components/panels/Panel.tsx`,
+`components/hero/HeroFirstLight.tsx`, `app/page.tsx`. Marker `v0.3-sprint2.5`.
+
+**Verified (headless):** t=0 genuinely dark → gradual bloom → stronger settled
+warm presence (text static throughout); stronger warm CTA; build passes.
+
 ### Rollback
 - To the canvas direction: `git checkout v0.2.1-canvas-final`.
 - To the original baseline: `git checkout v0.1-foundation-freeze`.

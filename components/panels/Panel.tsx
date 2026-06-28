@@ -55,8 +55,8 @@ export function Panel({
     const p = (y - a) / Math.max(1, b - a);
     return p < 0 ? 0 : p > 1 ? 1 : p;
   });
-  const scale = useTransform(recess, [0.45, 1], [1, 0.96]);
-  const opacity = useTransform(recess, [0.5, 1], [1, 0.55]);
+  const scale = useTransform(recess, [0.45, 1], [1, 0.945]);
+  const opacity = useTransform(recess, [0.5, 1], [1, 0.4]);
 
   return (
     <section

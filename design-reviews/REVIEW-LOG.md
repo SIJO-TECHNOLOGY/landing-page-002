@@ -5,6 +5,14 @@
 > **Benchmark: fixaplan.com** — floating capsule nav, full-bleed cinematic photography as composition, big confident type with italic-serif accents, one dominant movement, discovered warmth, restraint.
 > **Emotional target:** *"I don't fully understand what this company does — but I immediately know it's technologically exceptional."*
 > Bar to pass: **9.4+/10**. Below that = refine.
+>
+> **⚖️ CALIBRATION UPDATE (2026-06-28, from R4 onward): review to the CLIENT'S taste, not generic premium standards.** Primary question is no longer "is this well designed?" but **"when I scroll through this page, do I emotionally feel this company is exceptional?"** Weighted scoring:
+> 1. **Scroll continuity / cinematic transition — 30%** (highest; "does scrolling feel like moving through one continuous cinematic space?" Stacked sections = failure even if beautiful)
+> 2. **Hero first impression — 25%** (first 2–3s emotional confidence)
+> 3. **Premium luxury feeling — 20%** (anti–SaaS/dashboard/technical; Apple/Fixa/Stripe/Framer)
+> 4. **Composition transformation — 15%** (the page itself changing, not clever object animations)
+> 5. **Motion restraint — 5%**
+> 6. **Everything else — 5%** (typography, enterprise, depth, technical sophistication — do NOT overweight; do NOT reward implementation cleverness)
 
 ---
 
@@ -15,6 +23,7 @@
 | v0.3-R1 | 2026-06-28 | 6.5 | 7.0 | 5.5 | 8.0 | 4.5 | 8.5 | 6.5 | 6.0 | 8.5 | **6.5** |
 | v0.3-R2 (Sprint 1.5) | 2026-06-28 | 7.5 | 8.0 | 7.5 | 8.0* | 7.0 | 8.5 | 7.5 | 7.5 | 8.0 | **7.7** |
 | v0.3-R3 (Sprint 1.7) | 2026-06-28 | 7.5 | 8.5 | 7.5 | 8.0* | 7.5 | 8.5 | 7.5 | 7.8 | 8.5 | **8.0** |
+| v0.3-R4 (Sprint 2 — motion) | 2026-06-28 | 8.0 | 8.5 | 7.5 | 9.0 | 8.0 | 8.5 | 8.0 | 8.0 | 8.5 | **8.4** |
 
 *Motion restraint pending: page is 100% static by instruction; the "one dominant movement" dimension is deferred to Sprint 2 — scored neutral, not earned.
 
@@ -29,7 +38,9 @@ Status: 🔴 open · 🟡 partial · 🟢 resolved
 | V3-3 | High | Composition = centered statements stacked, symmetric/monotone | 🟢 (resolved @ R2 — asymmetric per beat: hero left, problem upper-right, shift lower-left, reasoning right, CTA center) |
 | V3-4 | High | "First Light" warmth has no ARC | 🟢 (resolved @ R3 — full arc hero 0.22 → problem 0 (cold) → shift 0.42 → reasoning 0.6 → CTA 0.92) |
 | V3-5 | High | Copy observability-SaaS & literal | 🟢 (resolved @ R2 — hero de-engineered to "Clarity, the instant everything breaks"; infra detail relocated to Reasoning beat where it belongs) |
-| V3-6 | Medium | Motion: needs one dominant page-level move | 🟡 (deferred — page 100% static by instruction; revisit Sprint 2) |
+| V3-6 | Medium | Motion: needs one dominant page-level move | 🟢 (resolved @ R4 — 3 disciplined motions: cold-open bloom, scroll-bound dawn drift, panel-glide recession. One-move-per-moment discipline is exemplary; motion restraint now 9.0) |
+| V3-9 | Medium | non-text side of panels is quiet/low-presence; hero emptiest | 🟡 (partly helped @ R4 — cold-open bloom gives the hero right side some life, but bloom is too subtle to fully activate it; tied to V3-10) |
+| V3-10 | Medium | NEW @ R4: all three motions dialed TOO SUBTLE to be *felt* — "quietly alive" currently leans "quiet." Cold-open bloom is ~settled by 1–2s (no perceptible "first light arriving"); dawn drift barely perceptible. Philosophy is perfect; magnitude is timid. Nudge bloom + drift UP (keep one-move discipline). Panel glide is the strongest — could push outgoing dim slightly | 🔴 |
 | V3-7 | High | monoliths read as generic blurred towers, repeated identically per beat | 🟢 (resolved @ R3 — monoliths removed entirely; pure atmospheric abstraction: light plane + haze + recession) |
 | V3-8 | Medium | warmth arc lacks a cool valley at PROBLEM | 🟢 (resolved @ R3 — PROBLEM dropped to warmth 0, distinctly cold blue + uncertainty wash) |
 | V3-9 | Medium | NEW @ R3: with monoliths gone, the non-text side of each panel is now a quiet near-empty atmospheric gradient — refined but low-presence. The hero (first impression) is the emptiest. NOT to be fixed with more static gradient layers (re-clutter risk) — this is the gap MOTION should fill (Sprint 2: light blooming/drifting in, dawn advancing) | 🟡 |
@@ -93,6 +104,49 @@ Status: 🔴 open · 🟡 partial · 🟢 resolved
 - *How does the world feel?* Genuinely premium and serious now. Pure-atmosphere was the right call over the monoliths. The cold→warm arc reads.
 - *Add subtle static light-plane gradients for more spatial interest?* **No.** Don't band-aid the quietness with more static layers — that risks re-cluttering. Leave it clean. The emptiness is motion's job.
 - *Move to Sprint 2?* **Yes — greenlit.** The static foundation is premium on its own. Two carries into Sprint 2: (1) the hero's quiet right side is the first impression — let the staged cold open give it presence (light blooming/drifting in), not a flat gradient on load; (2) make the dawn advancing across the scroll the ONE dominant signature movement. Restraint above all: one dominant move per moment, everything else still.
+
+---
+
+## Review v0.3-R4 — 2026-06-28 — Sprint 2 "Quietly Alive" (motion, commit 5172ceb)
+
+**Subject:** localhost:3000 v0.3-sprint2. Observed motion specifically (not settled stills): cold-open bloom (hard refresh, early vs settled frames), panel-glide recession (hero→problem seam mid-transition). Dawn drift inferred from the warmth arc; the two most observable motions prioritized.
+
+**Scores:** Imm. confidence 8.0 · Luxury 8.5 · Composition 7.5 · **Motion restraint 9.0** · Spatial depth 8.0 · Nav 8.5 · Typo 8.0 · Emotional 8.0 · Enterprise 8.5 · **Overall 8.4/10** (was 8.0).
+
+**Core finding — the discipline is exemplary.** All three motions confirmed and each follows the one-dominant-move-per-moment rule exactly: (1) cold-open bloom — warm light fills in while typography holds *completely still* (no fade-up); (2) panel glide — the incoming panel rises *over* a pinned, receding outgoing panel (layered camera-reveal, not flat slide) — the strongest of the three, adds real depth; (3) dawn drift — scroll-bound light movement compounding the cold→warm arc. No particles, no clutter, no SaaS sequences. This is the hardest thing to get right and it's right. Motion restraint earns 9.0.
+
+**The one real flaw (V3-10): too subtle to be *felt*.** "Quietly alive" currently leans *quiet*. The cold-open bloom is largely settled by ~1–2s, so it never reads as "first light arriving"; the dawn drift is barely perceptible. The philosophy is perfect; the magnitude is timid. This caps the emotional payoff — "immediately exceptional" needs the aliveness to register, not just exist.
+
+**FINAL VERDICT: B — Direction correct; closest yet (8.4). Fine-tune intensity, do not redirect.** The remaining gap to 9.4 is NOT more motions or different motions — it is dialing the existing three up just enough to be felt, while protecting the discipline. Secondary ceiling: composition's quiet non-text side (V3-9) — the bloom should be strong enough to make the hero's empty right side feel intentional and alive.
+
+**Answer to Builder (intensity question):** Yes — nudge up, you read it right. Priority: (1) **cold-open bloom** — slower + more contrast (start darker, travel further) so first-light visibly *arrives* over ~3–4s; this also activates the empty hero right side (V3-9); (2) **dawn drift** — make it gently perceptible as the signature move; (3) **panel glide** is the best — optionally deepen the outgoing dim a touch for more camera feel. Hold the one-move-per-moment discipline absolutely — that discipline is the achievement; don't trade it for magnitude.
+
+---
+
+## Review v0.3-R4b — 2026-06-28 — RE-SCORE under client-taste weighting (same build, Sprint 2)
+
+Build unchanged (5172ceb); only the standard changed. Re-observed all four seams specifically for scroll continuity.
+
+**Weighted scorecard (client priorities):**
+| Priority | Weight | Score | Note |
+|---|---|---|---|
+| Scroll continuity / cinematic transition | 30% | **5.5** | Structurally premium STACKED SECTIONS — every seam is the same panel-covers-panel cover/reveal (×4). The only whole-journey continuity element (dawn drift) is too subtle to feel. Does NOT read as one continuous cinematic space. |
+| Hero first impression | 25% | **7.0** | Premium, confident, but not an emotional knockout; bloom too subtle to register; hero's right side still empty. |
+| Premium luxury feeling | 20% | **8.5** | The build's strength — dark, restrained, atmospheric, anti-SaaS. Genuinely expensive-feeling. |
+| Composition transformation | 15% | **6.0** | Composition reconfigures in discrete steps (left/right/center), not continuous transformation of one space. |
+| Motion restraint | 5% | **9.0** | Exemplary discipline (but now only 5% weight). |
+| Everything else | 5% | **8.0** | Typo/nav/depth/seriousness strong — intentionally underweighted. |
+
+**Weighted overall ≈ 6.9/10** (vs 8.4 under the old generic weighting).
+
+**The honest message:** the entire trajectory since v0.3 optimized for premium-restraint and atmosphere — and succeeded (luxury 8.5). But it UNDER-invested in the client's now-#1 priority: continuous cinematic scroll transformation. The architecture itself — discrete full-viewport panels (chip + statement), each replaced by the next via a cover transition — is the ceiling on continuity. **Nudging motion intensity will not fix this.** The fix is structural: make scrolling feel like moving through ONE continuously-transforming space — persistent/shared elements that morph beat-to-beat, an environment that evolves continuously, the dawn as a felt continuous backbone — rather than panels covering panels. (Irony worth noting: the abandoned persistent-canvas concept was continuous *by design*; the real challenge is to recover that continuity WITHOUT the technical/topology aesthetic.)
+
+**FINAL VERDICT (client-calibrated): B — premium foundation is real, but the #1 priority (scroll continuity) is the weakest dimension and needs ARCHITECTURAL attention, not a nudge.**
+
+**Directives, in client-priority order:**
+1. **Scroll continuity (the 30%):** re-conceive the seams. Stop covering one panel with the next. Make one space transform continuously — shared/persistent atmospheric and compositional elements that carry and morph across beats. Make the dawn drift the perceptible continuity backbone (this single change serves both #1 and the hero).
+2. **Hero (25%):** raise the emotional ceiling of the first 2–3s — the bloom must be *felt*, and the empty right side must become intentional/alive.
+3. **Protect luxury (20%):** none of the above may reintroduce SaaS/dashboard/technical feel or busy-ness. Restraint stays.
 
 ---
 

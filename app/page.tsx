@@ -46,7 +46,7 @@ export default function Home() {
         </Panel>
 
         {/* Beat 2 — The shift · first warmth · lower-left */}
-        <Panel id="shift" atmosphere={<Atmosphere warmth={0.42} sunX={40} />}>
+        <Panel id="shift" atmosphere={<Atmosphere warmth={0.48} sunX={40} />}>
           <div className="mr-auto max-w-xl self-end pb-[16vh] text-left">
             <Eyebrow>the shift</Eyebrow>
             <h2 className={HEADING}>
@@ -60,7 +60,7 @@ export default function Home() {
         </Panel>
 
         {/* Beat 3 — Reasoning · warming · center-right · product clarity here */}
-        <Panel id="reasoning" atmosphere={<Atmosphere warmth={0.6} sunX={66} />}>
+        <Panel id="reasoning" atmosphere={<Atmosphere warmth={0.68} sunX={66} />}>
           <div className="ml-auto max-w-xl self-center text-right">
             <Eyebrow>reasoning</Eyebrow>
             <h2 className={HEADING}>
@@ -79,7 +79,7 @@ export default function Home() {
         </Panel>
 
         {/* Beat 5 — Final CTA · full warm dawn (confidence) · center-low */}
-        <Panel id="cta" atmosphere={<Atmosphere warmth={0.92} sunX={50} />}>
+        <Panel id="cta" atmosphere={<Atmosphere warmth={0.98} sunX={50} />}>
           <div className="mx-auto flex max-w-3xl flex-col items-center self-center text-center">
             <h2 className="font-display text-[clamp(2.4rem,6vw,4.6rem)] font-medium leading-[1.03] tracking-[-0.035em] [text-shadow:0_2px_40px_rgba(0,0,0,0.45)]">
               Stop searching. Start{" "}
@@ -100,7 +100,7 @@ export default function Home() {
 
       {/* TEMPORARY build marker — remove before release. */}
       <div className="pointer-events-none fixed bottom-3 left-3 z-50 font-mono text-[10px] tracking-[0.2em] text-faint/50">
-        v0.3-sprint2
+        v0.3-sprint2.5
       </div>
     </>
   );

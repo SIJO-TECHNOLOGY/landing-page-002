@@ -14,7 +14,7 @@ export function HeroFirstLight() {
     <Panel
       id="hero"
       rounded={false}
-      atmosphere={<Atmosphere warmth={0.22} sunX={64} coldOpen />}
+      atmosphere={<Atmosphere warmth={0.28} sunX={64} coldOpen />}
     >
       <div className="mr-auto max-w-2xl self-end pb-[15vh] text-left">
         <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.32em] text-warm-strong/80 backdrop-blur-sm">

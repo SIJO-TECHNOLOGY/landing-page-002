@@ -21,7 +21,8 @@ interface AtmosphereProps {
 }
 
 const HORIZON = 72; // % from top
-const EASE = [0.22, 1, 0.3, 1] as const;
+// Gradual dawn: slow start so the light arrives perceptibly, not all at once.
+const BLOOM_EASE = [0.42, 0, 0.2, 1] as const;
 
 /** Light hue recedes from cold blue (warmth 0) to warm gold (warmth 1). */
 function light(w: number, a: number): string {
@@ -34,12 +35,15 @@ function light(w: number, a: number): string {
 export function Atmosphere({ warmth = 0.2, sunX = 50, coldOpen = false }: AtmosphereProps) {
   const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll();
-  // Signature dawn advance — the light rises slowly across the whole journey.
-  const driftY = useTransform(scrollYProgress, [0, 1], ["7%", "-24%"]);
+  // Signature dawn advance — the light rises across the journey (more travel
+  // so the world is felt evolving while scrolling; still slow + subtle).
+  const driftY = useTransform(scrollYProgress, [0, 1], ["13%", "-42%"]);
 
   const w = warmth;
-  const ground = `rgb(${Math.round(8 + w * 18)}, ${Math.round(11 + w * 8)}, ${Math.round(19 - w * 9)})`;
-  const cold = Math.max(0, 0.45 - w) * 0.6;
+  // Base stays genuinely dark and only mildly warm-reactive — warmth is carried
+  // by the light plane (which blooms on the hero), maximizing the dawn contrast.
+  const ground = `rgb(${Math.round(5 + w * 12)}, ${Math.round(7 + w * 6)}, ${Math.round(13 - w * 4)})`;
+  const cold = Math.max(0, 0.45 - w) * 0.72;
 
   const bloom = coldOpen && !reduced;
 
@@ -49,7 +53,7 @@ export function Atmosphere({ warmth = 0.2, sunX = 50, coldOpen = false }: Atmosp
       <div
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(180deg, #05070e 0%, #060912 ${HORIZON - 28}%, ${ground} 100%)`,
+          background: `linear-gradient(180deg, #03040a 0%, #04060d ${HORIZON - 28}%, ${ground} 100%)`,
         }}
       />
 
@@ -57,15 +61,15 @@ export function Atmosphere({ warmth = 0.2, sunX = 50, coldOpen = false }: Atmosp
       <motion.div className="absolute inset-0" style={reduced ? undefined : { y: driftY }}>
         <motion.div
           className="absolute inset-0"
-          initial={bloom ? { opacity: 0, scale: 0.94, y: 16 } : false}
+          initial={bloom ? { opacity: 0, scale: 0.8, y: 64 } : false}
           animate={bloom ? { opacity: 1, scale: 1, y: 0 } : undefined}
-          transition={{ duration: 3.8, ease: EASE }}
+          transition={{ duration: 5.6, ease: BLOOM_EASE }}
         >
           {/* Volumetric light plane at the horizon */}
           <div
             className="absolute inset-0"
             style={{
-              background: `radial-gradient(72% 34% at ${sunX}% ${HORIZON + 2}%, ${light(w, 0.1 + w * 0.5)} 0%, ${light(w, 0.03 + w * 0.14)} 38%, transparent 70%)`,
+              background: `radial-gradient(74% 36% at ${sunX}% ${HORIZON + 2}%, ${light(w, 0.13 + w * 0.62)} 0%, ${light(w, 0.04 + w * 0.18)} 38%, transparent 70%)`,
             }}
           />
           {/* Distant haze field — farther, fainter */}
@@ -74,7 +78,7 @@ export function Atmosphere({ warmth = 0.2, sunX = 50, coldOpen = false }: Atmosp
             style={{
               top: `${HORIZON - 19}%`,
               height: "18%",
-              background: `linear-gradient(180deg, transparent, ${light(w, 0.04 + w * 0.05)} 60%, transparent)`,
+              background: `linear-gradient(180deg, transparent, ${light(w, 0.05 + w * 0.07)} 60%, transparent)`,
             }}
           />
           {/* Nearer haze field — lower, denser */}
@@ -83,7 +87,7 @@ export function Atmosphere({ warmth = 0.2, sunX = 50, coldOpen = false }: Atmosp
             style={{
               top: `${HORIZON - 8}%`,
               height: "17%",
-              background: `linear-gradient(180deg, transparent, ${light(w, 0.07 + w * 0.11)} 50%, transparent)`,
+              background: `linear-gradient(180deg, transparent, ${light(w, 0.09 + w * 0.14)} 50%, transparent)`,
             }}
           />
         </motion.div>
