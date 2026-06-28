@@ -109,6 +109,32 @@ passes.
 **Files:** `components/atmosphere/Atmosphere.tsx` (rewritten),
 `components/hero/HeroFirstLight.tsx` (warmth), `app/page.tsx` (Problem warmth).
 
+## v0.3 — Sprint 2 (motion: quietly alive)
+
+Make the page come alive with extreme restraint — one dominant movement per
+moment, everything else still. No particles, no topology, no glow-everywhere,
+no SaaS fade-up sequences. Three coordinated motions, nothing more.
+
+**Changes**
+- **Cold open (hero):** the first light slowly **blooms in** on load (~3.8s,
+  opacity + gentle scale/rise on the light group only). Typography is present
+  and **still** — no text animation.
+- **Signature dawn:** the light/haze group is bound to page scroll and **drifts
+  upward** across the journey (the sun advancing). The one signature motion.
+- **Panel glide:** outgoing panels **recede as composition surfaces** — a subtle
+  scale-down + dim as the next slides over (depth/camera), not a flat slide.
+  The sticky shell stays intact; only an inner layer transforms.
+- Typography and floating nav: unchanged, still/calm.
+- All motion is `prefers-reduced-motion` guarded → fully static fallback.
+- Marker → `v0.3-sprint2`.
+
+**Verified (headless):** cold-open bloom over time with still typography; panel
+recession at the seam; build passes.
+
+**Files:** `components/atmosphere/Atmosphere.tsx` (client + motion),
+`components/panels/Panel.tsx` (client + recession),
+`components/hero/HeroFirstLight.tsx` (coldOpen prop).
+
 ### Rollback
 - To the canvas direction: `git checkout v0.2.1-canvas-final`.
 - To the original baseline: `git checkout v0.1-foundation-freeze`.

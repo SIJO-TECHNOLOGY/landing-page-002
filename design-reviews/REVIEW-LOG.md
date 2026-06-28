@@ -14,6 +14,7 @@
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | v0.3-R1 | 2026-06-28 | 6.5 | 7.0 | 5.5 | 8.0 | 4.5 | 8.5 | 6.5 | 6.0 | 8.5 | **6.5** |
 | v0.3-R2 (Sprint 1.5) | 2026-06-28 | 7.5 | 8.0 | 7.5 | 8.0* | 7.0 | 8.5 | 7.5 | 7.5 | 8.0 | **7.7** |
+| v0.3-R3 (Sprint 1.7) | 2026-06-28 | 7.5 | 8.5 | 7.5 | 8.0* | 7.5 | 8.5 | 7.5 | 7.8 | 8.5 | **8.0** |
 
 *Motion restraint pending: page is 100% static by instruction; the "one dominant movement" dimension is deferred to Sprint 2 — scored neutral, not earned.
 
@@ -26,11 +27,12 @@ Status: 🔴 open · 🟡 partial · 🟢 resolved
 | V3-1 | Critical | Elegant void — every section text on near-black, no world/depth | 🟢 (resolved @ R2 — atmospheric dawn world: monoliths + volumetric light + haze + vignette behind every panel) |
 | V3-2 | Critical | Spatial depth nearly absent, page flat (4.5) | 🟢 (resolved @ R2 — real fg/bg separation via scaled blurred monoliths + dawn + vignette; depth 4.5→7.0. See V3-7 for remaining ceiling) |
 | V3-3 | High | Composition = centered statements stacked, symmetric/monotone | 🟢 (resolved @ R2 — asymmetric per beat: hero left, problem upper-right, shift lower-left, reasoning right, CTA center) |
-| V3-4 | High | "First Light" warmth has no ARC | 🟡 (mostly resolved @ R2 — genuine dark→warm arc to the CTA; BUT the PROBLEM beat still shows a warm bottom band, so the cool "valley" is missing — see V3-8) |
+| V3-4 | High | "First Light" warmth has no ARC | 🟢 (resolved @ R3 — full arc hero 0.22 → problem 0 (cold) → shift 0.42 → reasoning 0.6 → CTA 0.92) |
 | V3-5 | High | Copy observability-SaaS & literal | 🟢 (resolved @ R2 — hero de-engineered to "Clarity, the instant everything breaks"; infra detail relocated to Reasoning beat where it belongs) |
 | V3-6 | Medium | Motion: needs one dominant page-level move | 🟡 (deferred — page 100% static by instruction; revisit Sprint 2) |
-| V3-7 | High | NEW @ R2: the monoliths are the weak link — dark rounded-rectangle slabs read as a blurred bar-chart / generic towers, and the SAME ~6-slab layout repeats identically on every beat. The "world" is one static backdrop slid behind each text block, not an evolving environment. Soften toward pure light/haze/horizon forms AND vary per beat | 🔴 |
-| V3-8 | Medium | NEW @ R2: warmth arc lacks a valley — PROBLEM should be the coolest/darkest low point but still carries a warm bottom band. Push it genuinely cold/blue so the dawn payoff at the CTA lands harder | 🔴 |
+| V3-7 | High | monoliths read as generic blurred towers, repeated identically per beat | 🟢 (resolved @ R3 — monoliths removed entirely; pure atmospheric abstraction: light plane + haze + recession) |
+| V3-8 | Medium | warmth arc lacks a cool valley at PROBLEM | 🟢 (resolved @ R3 — PROBLEM dropped to warmth 0, distinctly cold blue + uncertainty wash) |
+| V3-9 | Medium | NEW @ R3: with monoliths gone, the non-text side of each panel is now a quiet near-empty atmospheric gradient — refined but low-presence. The hero (first impression) is the emptiest. NOT to be fixed with more static gradient layers (re-clutter risk) — this is the gap MOTION should fill (Sprint 2: light blooming/drifting in, dawn advancing) | 🟡 |
 | V3-WIN | — | WINS: Fixa-grade floating nav (8.5); warm italic-serif accent; de-engineered emotional hero line; real atmospheric world replacing the void; dark→warm arc delivered; restraint preserved. v0.2 over-animation disease fully cured | 🟢 |
 
 ## Review v0.3-R1 — 2026-06-28 — Fixa-benchmark creative direction review
@@ -72,6 +74,25 @@ Status: 🔴 open · 🟡 partial · 🟢 resolved
 **Answers to Builder's questions:**
 - *How does the world feel?* Real. The void is gone; this is the first build that feels like an exceptional company rather than a tasteful template. Atmosphere, warmth-arc, and asymmetry all work.
 - *What to adjust?* Priority order: (1) **monolith forms** — soften toward light/haze and vary per beat (yes, do the softening you proposed); (2) **deepen atmosphere** toward true distance, not blurred slabs; (3) **warmth curve** — make PROBLEM a genuine cold valley before the dawn; (4) composition is good, keep it. Hold motion for Sprint 2 as planned.
+
+---
+
+## Review v0.3-R3 — 2026-06-28 — Sprint 1.7 "Atmosphere refinement" (commit 1987d2c)
+
+**Subject:** localhost:3000 v0.3-sprint1.7 — hero + PROBLEM (cold valley) + CTA (warm peak) verified; composition/nav/typo untouched per Builder.
+
+**Scores:** Imm. confidence 7.5 · Luxury 8.5 · Composition 7.5 · Motion restraint 8.0* · Spatial depth 7.5 · Nav 8.5 · Typo 7.5 · Emotional 7.8 · Enterprise 8.5 · **Overall 8.0/10** (was 7.7). *static by instruction.
+
+**Core finding:** All three targeted fixes confirmed in browser. Monoliths removed entirely (V3-7 ✓) — the world is now pure atmospheric abstraction, which reads more expensive and more *serious* than the slightly-generic dawn-skyline (Luxury 8.0→8.5, Enterprise 8.0→8.5). Depth is now authentic atmospheric perspective rather than a fake-bokeh diorama (quality up, 7.0→7.5). The cold valley is real — PROBLEM is a distinctly cool deep-blue panel, making the warm CTA dawn pay off (V3-4, V3-8 ✓).
+
+**The trade-off (V3-9):** removing the monoliths also removed the spatial *mass* they provided. The non-text side of each panel is now a quiet, near-empty atmospheric gradient — refined but low-presence; the hero (first impression) is the emptiest. This is the correct trade (generic mass → clean abstraction), but it confirms the **static foundation has now topped out**: further static refinement yields diminishing returns, and the remaining "quietness" should be filled by MOTION, not by adding more static gradient layers (which would re-clutter).
+
+**FINAL VERDICT: B — Direction correct; static foundation is now premium and essentially complete.** The path from 8.0 → 9.4 is no longer static work — it is **motion**. Greenlight Sprint 2.
+
+**Answers to Builder:**
+- *How does the world feel?* Genuinely premium and serious now. Pure-atmosphere was the right call over the monoliths. The cold→warm arc reads.
+- *Add subtle static light-plane gradients for more spatial interest?* **No.** Don't band-aid the quietness with more static layers — that risks re-cluttering. Leave it clean. The emptiness is motion's job.
+- *Move to Sprint 2?* **Yes — greenlit.** The static foundation is premium on its own. Two carries into Sprint 2: (1) the hero's quiet right side is the first impression — let the staged cold open give it presence (light blooming/drifting in), not a flat gradient on load; (2) make the dawn advancing across the scroll the ONE dominant signature movement. Restraint above all: one dominant move per moment, everything else still.
 
 ---
 
