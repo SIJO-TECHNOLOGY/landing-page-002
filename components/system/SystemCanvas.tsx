@@ -8,13 +8,27 @@
  * morphs the same object through five acts:
  *   ambient → chaos → awakening → reasoning → resolution → calm.
  *
- * On first load it plays an orchestrated "cold open" ignition, independent of
- * scroll. Honors reduced-motion (renders one composed frame) and pauses on
- * tab blur.
+ * Cold open (Sprint 1.A): a slow, staged ignition — one seed signal, a second
+ * response, an outward expansion into a breathing topology — owns the screen
+ * before any headline resolves.
+ * Agent arrival (Sprint 1.B): four agents fly in from offscreen edges with
+ * overshoot + light flare as a real, staggered event.
+ * Chaos (Sprint 1.C): a sustained "danger" plateau drives jitter, broken
+ * edges, erratic packets, and amber/red warnings so failure feels unstable.
+ *
+ * Honors reduced-motion (renders one composed frame) and pauses on tab blur.
  */
 import { useEffect, useRef } from "react";
 import { buildSystemGraph, type NodeKind } from "@/lib/graph";
-import { clamp01, nodePos, sceneScalars, smoothstep, type Vec } from "@/lib/scene";
+import {
+  clamp01,
+  easeOutBack,
+  lerp,
+  nodePos,
+  sceneScalars,
+  smoothstep,
+  type Vec,
+} from "@/lib/scene";
 import { useReducedMotion } from "@/lib/hooks/useReducedMotion";
 
 type RGB = readonly [number, number, number];
@@ -30,9 +44,28 @@ const PALETTE: Record<NodeKind, { rgb: RGB; r: number; glow: number }> = {
 
 const OK: RGB = [52, 211, 153];
 const WARN: RGB = [245, 158, 11];
+const RED: RGB = [239, 68, 68];
 const SIGNAL: RGB = [56, 189, 248];
+const WHITE: RGB = [226, 240, 255];
+
 const PACKET_COUNT = 90;
 const NOISE_COUNT = 64;
+const GLITCH_COUNT = 14;
+
+// Cold-open + agent-arrival timing.
+const INTRO_MS = 3000;
+const AGENT_DURATION_MS = 720;
+const AGENT_STAGGER_MS = 90;
+const AGENT_TRIGGER_P = 0.4;
+const AGENT_REARM_P = 0.3;
+
+type Dir = "left" | "top" | "right" | "bottom";
+const AGENT_DEFS: ReadonlyArray<{ id: string; dir: Dir }> = [
+  { id: "agent-log", dir: "left" },
+  { id: "agent-db", dir: "top" },
+  { id: "agent-api", dir: "right" },
+  { id: "agent-infra", dir: "bottom" },
+];
 
 function rgba(c: RGB, a: number): string {
   return `rgba(${c[0]},${c[1]},${c[2]},${a})`;
@@ -58,6 +91,18 @@ interface NoiseDot {
   phase: number;
 }
 
+interface GlitchEdge {
+  a: number;
+  b: number;
+  phase: number;
+}
+
+interface AgentMeta {
+  idx: number;
+  dir: Dir;
+  order: number;
+}
+
 export function SystemCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduced = useReducedMotion();
@@ -69,6 +114,7 @@ export function SystemCanvas() {
     if (!ctx) return;
 
     const graph = buildSystemGraph();
+    const n = graph.nodes.length;
     const rand = mulberryLite(13);
 
     const packets: Packet[] = Array.from({ length: PACKET_COUNT }, () => ({
@@ -81,13 +127,48 @@ export function SystemCanvas() {
       y: (rand() * 2 - 1) * 1.05,
       phase: rand() * Math.PI * 2,
     }));
+    const glitches: GlitchEdge[] = Array.from({ length: GLITCH_COUNT }, () => ({
+      a: Math.floor(rand() * n),
+      b: Math.floor(rand() * n),
+      phase: rand() * Math.PI * 2,
+    }));
+
+    // Cold-open reveal order: nearest-to-center ignites first, then cascades
+    // outward. The first two get a deliberate "signal → response" beat.
+    const order = [...graph.nodes.keys()].sort((i, j) => {
+      const ri = Math.hypot(
+        graph.nodes[i].keyframes[0].x,
+        graph.nodes[i].keyframes[0].y,
+      );
+      const rj = Math.hypot(
+        graph.nodes[j].keyframes[0].x,
+        graph.nodes[j].keyframes[0].y,
+      );
+      return ri - rj;
+    });
+    const birth = new Array<number>(n).fill(0);
+    order.forEach((nodeIdx, rank) => {
+      if (rank === 0) birth[nodeIdx] = 0;
+      else if (rank === 1) birth[nodeIdx] = 0.12;
+      else birth[nodeIdx] = lerp(0.3, 0.74, (rank - 2) / Math.max(1, n - 3));
+    });
+
+    const agents: AgentMeta[] = AGENT_DEFS.map((d, order) => ({
+      idx: graph.nodes.findIndex((node) => node.id === d.id),
+      dir: d.dir,
+      order,
+    })).filter((a) => a.idx >= 0);
+    const agentByIndex = new Map(agents.map((a) => [a.idx, a]));
 
     let width = 0;
     let height = 0;
     let scale = 1;
     let cx = 0;
     let cy = 0;
+    let agentArrivalStart = -1; // ms timestamp; -1 = not yet triggered
     const live: Vec[] = graph.nodes.map(() => ({ x: 0, y: 0 }));
+    const nodeFlare = new Array<number>(n).fill(0);
+    const presence = new Array<number>(n).fill(0); // node visibility [0,1]
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -104,60 +185,154 @@ export function SystemCanvas() {
     };
 
     const scrollProgress = (): number => {
-      const max =
-        document.documentElement.scrollHeight - window.innerHeight;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
       return max > 0 ? clamp01(window.scrollY / max) : 0;
     };
 
     const px = (v: Vec) => cx + v.x * scale;
     const py = (v: Vec) => cy + v.y * scale;
 
-    /** Render one full frame. `intro` in [0,1] is the cold-open envelope. */
-    const draw = (p: number, intro: number, time: number) => {
+    const entryPoint = (home: Vec, dir: Dir): Vec => {
+      switch (dir) {
+        case "left":
+          return { x: -2.0, y: home.y };
+        case "right":
+          return { x: 2.0, y: home.y };
+        case "top":
+          return { x: home.x, y: -1.9 };
+        case "bottom":
+          return { x: home.x, y: 1.9 };
+      }
+    };
+
+    /**
+     * Render one frame. `intro` is the cold-open envelope [0,1]; `staticMode`
+     * composes a single settled frame (reduced motion).
+     */
+    const draw = (p: number, intro: number, time: number, staticMode = false) => {
       const s = sceneScalars(p);
-      const expand = smoothstep(0.18, 1, intro);
-      const seedPulse = Math.max(0, 1 - Math.abs(intro - 0.1) / 0.12);
-      const wired = (0.05 + s.structure * 0.22) * smoothstep(0.5, 1, intro);
+      const danger = staticMode ? 0 : s.danger;
+      const seedGlow = staticMode ? 0 : 1 - smoothstep(0, 0.22, intro);
 
       ctx.clearRect(0, 0, width, height);
+      nodeFlare.fill(0);
 
-      // Compute live positions (center → scroll target during intro).
-      for (let i = 0; i < graph.nodes.length; i++) {
+      // Per-agent arrival progress (Sprint 1.B).
+      const elapsed = agentArrivalStart >= 0 ? time - agentArrivalStart : -1;
+
+      // --- Live node positions + presence ----------------------------------
+      for (let i = 0; i < n; i++) {
         const target = nodePos(graph.nodes[i].keyframes, p);
-        live[i] = { x: target.x * expand, y: target.y * expand };
+        const agent = agentByIndex.get(i);
+        let pos: Vec;
+
+        if (agent && !staticMode) {
+          // Fly in from offscreen with overshoot, staggered per agent. rawT is
+          // left unclamped so the arrival flare is a transient burst, not a
+          // permanent glow.
+          const rawT =
+            (elapsed - agent.order * AGENT_STAGGER_MS) / AGENT_DURATION_MS;
+          const at = clamp01(rawT);
+          const entry = entryPoint(target, agent.dir);
+          const e = easeOutBack(at);
+          pos = { x: lerp(entry.x, target.x, e), y: lerp(entry.y, target.y, e) };
+          presence[i] = elapsed < 0 ? 0 : smoothstep(0, 0.18, at);
+          nodeFlare[i] = elapsed >= 0 ? bumpAt(rawT, 0.92, 0.5) : 0;
+        } else {
+          const reveal = staticMode
+            ? 1
+            : smoothstep(birth[i], birth[i] + 0.16, intro);
+          pos = { x: target.x * reveal, y: target.y * reveal };
+          presence[i] = reveal;
+          nodeFlare[i] = 0;
+        }
+
+        // Ambient breathing (subtle life when unstructured) + chaos jitter.
+        if (!staticMode) {
+          const breath = (1 - s.structure) * 0.008;
+          pos = {
+            x: pos.x + Math.sin(time * 0.0009 + i * 1.3) * breath,
+            y: pos.y + Math.cos(time * 0.0011 + i * 0.7) * breath,
+          };
+          if (danger > 0.01) {
+            const jx =
+              Math.sin(time * 0.013 + i * 12.9) +
+              Math.sin(time * 0.021 + i * 7.3);
+            const jy =
+              Math.cos(time * 0.017 + i * 9.1) +
+              Math.sin(time * 0.029 + i * 4.7);
+            pos = {
+              x: pos.x + jx * 0.018 * danger,
+              y: pos.y + jy * 0.018 * danger,
+            };
+          }
+        }
+        live[i] = pos;
       }
 
-      // Central ambient bloom — brightens as the system "thinks".
-      const bloom = 0.18 + s.structure * 0.32 + s.verdict * 0.5;
+      // --- Central blooms ---------------------------------------------------
       ctx.globalCompositeOperation = "lighter";
-      paintGlow(ctx, cx, cy, scale * (0.6 + s.verdict * 0.3), PALETTE.coordinator.rgb, bloom * 0.5 * intro);
-
-      // Cold-open seed pulse.
-      if (seedPulse > 0) {
-        paintGlow(ctx, cx, cy, 60 + seedPulse * 80, SIGNAL, seedPulse * 0.9);
+      const bloom = 0.18 + s.structure * 0.32 + s.verdict * 0.5;
+      paintGlow(
+        ctx,
+        cx,
+        cy,
+        scale * (0.6 + s.verdict * 0.3),
+        PALETTE.coordinator.rgb,
+        bloom * 0.5 * (staticMode ? 1 : intro),
+      );
+      if (seedGlow > 0.01) {
+        paintGlow(ctx, cx, cy, 70 + seedGlow * 70, SIGNAL, seedGlow * 0.95);
       }
 
-      // Noise field — the overload of Act I.
-      const noiseAmt = s.chaos * intro;
-      if (noiseAmt > 0.01) {
+      // --- Noise field — intensifies into amber/red distress ---------------
+      if (danger > 0.01) {
         for (const d of noise) {
-          const flick = 0.4 + 0.6 * Math.sin(time * 0.004 + d.phase);
-          const a = noiseAmt * flick * 0.5;
-          if (a <= 0.01) continue;
-          ctx.fillStyle = rgba(WARN, a * 0.5);
+          const flick = 0.5 + 0.5 * Math.sin(time * 0.012 + d.phase * 5);
+          const a = danger * flick * 0.7;
+          if (a <= 0.02) continue;
+          const jx = Math.sin(time * 0.02 + d.phase) * 0.02 * danger;
+          ctx.fillStyle = rgba(mix(WARN, RED, flick * danger), a * 0.6);
           ctx.beginPath();
-          ctx.arc(px(d), py(d), 1.3, 0, Math.PI * 2);
+          ctx.arc(px({ x: d.x + jx, y: d.y }), py(d), 1.2 + flick, 0, Math.PI * 2);
           ctx.fill();
         }
       }
 
-      // Edges — wire up as structure forms.
-      if (wired > 0.01) {
+      // --- Broken/transient connections (Sprint 1.C) -----------------------
+      if (danger > 0.04) {
+        ctx.lineWidth = 1;
+        for (const g of glitches) {
+          const blink = Math.sin(time * 0.03 + g.phase * 7);
+          if (blink < 0.55) continue; // appears only intermittently
+          const a = danger * (0.2 + 0.5 * (blink - 0.55) / 0.45);
+          const va = live[g.a];
+          const vb = live[g.b];
+          ctx.strokeStyle = rgba(mix(WARN, RED, 0.6), a);
+          ctx.beginPath();
+          ctx.moveTo(px(va), py(va));
+          ctx.lineTo(px(vb), py(vb));
+          ctx.stroke();
+        }
+      }
+
+      // --- Structural edges (wire up + pathway activation on arrival) ------
+      const wired =
+        (0.05 + s.structure * 0.22) * (staticMode ? 1 : smoothstep(0.4, 1, intro));
+      if (wired > 0.01 || !staticMode) {
         ctx.lineWidth = 1;
         for (const e of graph.edges) {
           const a = live[e.from];
           const b = live[e.to];
-          ctx.strokeStyle = rgba(PALETTE.coordinator.rgb, wired * (1 - s.verdict * 0.4));
+          const vis = Math.min(presence[e.from], presence[e.to]);
+          if (vis <= 0.02) continue; // don't draw toward not-yet-arrived agents
+          const pathway = Math.max(nodeFlare[e.from], nodeFlare[e.to]);
+          const alpha = (wired * (1 - s.verdict * 0.4) + pathway * 0.55) * vis;
+          if (alpha <= 0.01) continue;
+          ctx.strokeStyle = rgba(
+            mix(PALETTE.coordinator.rgb, SIGNAL, pathway),
+            alpha,
+          );
           ctx.beginPath();
           ctx.moveTo(px(a), py(a));
           ctx.lineTo(px(b), py(b));
@@ -165,45 +340,76 @@ export function SystemCanvas() {
         }
       }
 
-      // Packets — ordered flow along edges, brightening with structure.
-      const packetAlpha = (0.12 + s.structure * 0.8) * smoothstep(0.8, 1, intro);
-      if (packetAlpha > 0.01) {
-        for (const pk of packets) {
-          pk.t += pk.speed * (0.4 + s.structure * 1.6 + s.verdict * 1.2);
-          if (pk.t > 1) {
-            pk.t -= 1;
-            pk.edge = Math.floor(rand() * graph.edges.length);
-          }
-          const e = graph.edges[pk.edge];
-          const a = live[e.from];
-          const b = live[e.to];
-          const x = px({ x: a.x + (b.x - a.x) * pk.t, y: a.y + (b.y - a.y) * pk.t });
-          const y = py({ x: a.x + (b.x - a.x) * pk.t, y: a.y + (b.y - a.y) * pk.t });
-          const col = mix(SIGNAL, OK, s.verdict);
-          ctx.fillStyle = rgba(col, packetAlpha);
-          ctx.beginPath();
-          ctx.arc(x, y, 1.5, 0, Math.PI * 2);
-          ctx.fill();
+      // --- Packets — ordered flow, erratic + reversing under danger --------
+      const packetAlpha =
+        (0.12 + s.structure * 0.8) * (staticMode ? 1 : smoothstep(0.8, 1, intro));
+      for (const pk of packets) {
+        let move = pk.speed * (0.4 + s.structure * 1.6 + s.verdict * 1.2);
+        if (danger > 0.15) {
+          const dir = Math.sin(time * 0.002 + pk.edge * 2.7) > 0 ? 1 : -1;
+          move *= dir * (0.5 + Math.abs(Math.sin(time * 0.01 + pk.edge)));
         }
+        pk.t = ((pk.t + move) % 1 + 1) % 1;
+
+        const a = packetAlpha > 0.01 || danger > 0.15
+          ? Math.max(packetAlpha, danger * 0.55)
+          : 0;
+        if (a <= 0.01) continue;
+
+        const e = graph.edges[pk.edge];
+        const va = live[e.from];
+        const vb = live[e.to];
+        const jit = danger > 0.15 ? Math.sin(time * 0.05 + pk.edge) * 0.02 * danger : 0;
+        const lx = va.x + (vb.x - va.x) * pk.t + jit;
+        const ly = va.y + (vb.y - va.y) * pk.t + jit;
+        const col = mix(mix(SIGNAL, WARN, danger * 0.7), OK, s.verdict);
+        ctx.fillStyle = rgba(col, a);
+        ctx.beginPath();
+        ctx.arc(px({ x: lx, y: ly }), py({ x: lx, y: ly }), 1.5, 0, Math.PI * 2);
+        ctx.fill();
+        if (pk.t > 1) pk.edge = Math.floor(rand() * graph.edges.length);
       }
 
-      // Nodes.
-      for (let i = 0; i < graph.nodes.length; i++) {
+      // --- Nodes ------------------------------------------------------------
+      for (let i = 0; i < n; i++) {
         const node = graph.nodes[i];
         const conf = PALETTE[node.kind];
         const pos = live[i];
         const x = px(pos);
         const y = py(pos);
 
-        let alpha = smoothstep(0.12, 0.5, intro);
-        if (node.kind === "agent") alpha *= 0.25 + s.agents * 0.75;
+        // Visibility comes from the unified presence model (cold-open reveal
+        // for the system, arrival ramp for agents).
+        let alpha = presence[i];
         const isRoot = node.kind === "root";
         if (!isRoot) alpha *= 1 - s.verdict * 0.55;
+        if (alpha <= 0.01) continue;
 
-        const pulse = 0.85 + 0.15 * Math.sin(time * 0.0022 + i);
         let rgbCol = conf.rgb;
         let radius = conf.r;
         let glow = conf.glow;
+        let pulse = 0.85 + 0.15 * Math.sin(time * 0.0022 + i);
+
+        // Irregular pulse + amber/red warning tint under danger.
+        if (danger > 0.01) {
+          const erratic =
+            Math.sin(time * 0.03 + i * 2.3) * Math.sin(time * 0.011 + i);
+          pulse *= 1 + danger * 0.5 * erratic;
+          const warnMix = clamp01(danger * (0.35 + 0.65 * Math.max(0, erratic)));
+          rgbCol = mix(rgbCol, i % 3 === 0 ? RED : WARN, warnMix);
+        }
+
+        // Agent arrival flare.
+        const flare = nodeFlare[i];
+        if (flare > 0.01) {
+          rgbCol = mix(rgbCol, WHITE, flare * 0.8);
+          paintGlow(ctx, x, y, glow + flare * 70, SIGNAL, flare * 0.7);
+          ctx.strokeStyle = rgba(SIGNAL, flare * 0.5);
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(x, y, radius + 6 + flare * 26, 0, Math.PI * 2);
+          ctx.stroke();
+        }
 
         if (isRoot) {
           rgbCol = mix(conf.rgb, OK, s.verdict);
@@ -222,23 +428,21 @@ export function SystemCanvas() {
         paintGlow(ctx, x, y, glow * pulse, rgbCol, alpha * 0.5);
         ctx.fillStyle = rgba(rgbCol, Math.min(1, alpha * 1.4));
         ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.arc(x, y, Math.max(0.5, radius * pulse), 0, Math.PI * 2);
         ctx.fill();
       }
 
-      // Labels — system identifiers appear as the pipeline resolves.
+      // --- Labels — system identifiers appear as the pipeline resolves -----
       ctx.globalCompositeOperation = "source-over";
       const labelAlpha = smoothstep(0.45, 0.75, p) * (1 - s.verdict * 0.7);
       if (labelAlpha > 0.02) {
-        ctx.font =
-          "10px var(--font-geist-mono), ui-monospace, monospace";
+        ctx.font = "10px var(--font-geist-mono), ui-monospace, monospace";
         ctx.textAlign = "center";
-        for (let i = 0; i < graph.nodes.length; i++) {
-          const node = graph.nodes[i];
-          if (node.kind === "source") continue;
+        for (let i = 0; i < n; i++) {
+          if (graph.nodes[i].kind === "source") continue;
           const pos = live[i];
           ctx.fillStyle = rgba([148, 163, 184], labelAlpha * 0.8);
-          ctx.fillText(node.label, px(pos), py(pos) - 12);
+          ctx.fillText(graph.nodes[i].label, px(pos), py(pos) - 12);
         }
       }
     };
@@ -246,10 +450,10 @@ export function SystemCanvas() {
     // --- Reduced motion: one composed frame, no loop. ---
     if (reduced) {
       resize();
-      draw(0.5, 1, 0);
+      draw(0.5, 1, 0, true);
       const onResize = () => {
         resize();
-        draw(0.5, 1, 0);
+        draw(0.5, 1, 0, true);
       };
       window.addEventListener("resize", onResize);
       return () => window.removeEventListener("resize", onResize);
@@ -263,9 +467,17 @@ export function SystemCanvas() {
 
     const loop = (time: number) => {
       if (!start) start = time;
-      const intro = clamp01((time - start) / 2400);
+      const intro = clamp01((time - start) / INTRO_MS);
       const pTarget = scrollProgress();
       pSmooth += (pTarget - pSmooth) * 0.08;
+
+      // Arm / re-arm the agent arrival event around the Awakening act.
+      if (pSmooth > AGENT_TRIGGER_P && agentArrivalStart < 0) {
+        agentArrivalStart = time;
+      } else if (pSmooth < AGENT_REARM_P && agentArrivalStart >= 0) {
+        agentArrivalStart = -1;
+      }
+
       draw(pSmooth, intro, time);
       raf = requestAnimationFrame(loop);
     };
@@ -327,6 +539,12 @@ function paintGlow(
   ctx.beginPath();
   ctx.arc(x, y, radius, 0, Math.PI * 2);
   ctx.fill();
+}
+
+/** Symmetric bump centered at `c`, half-width `w`, peaking at 1. */
+function bumpAt(x: number, c: number, w: number): number {
+  const d = Math.abs(x - c) / w;
+  return d >= 1 ? 0 : 1 - d * d * (3 - 2 * d);
 }
 
 /** Tiny local PRNG for runtime particle reshuffling (browser-only). */

@@ -31,6 +31,14 @@ export function easeInOut(t: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
+/** Overshoot easing — used for agents that fly in and settle past their mark. */
+export function easeOutBack(t: number): number {
+  const x = clamp01(t) - 1;
+  const c1 = 1.70158;
+  const c3 = c1 + 1;
+  return 1 + c3 * x * x * x + c1 * x * x;
+}
+
 /** Smoothstep ramp from edge0..edge1, eased. */
 export function smoothstep(edge0: number, edge1: number, x: number): number {
   const t = clamp01((x - edge0) / (edge1 - edge0));
@@ -60,6 +68,12 @@ export function nodePos(keyframes: readonly Vec[], p: number): Vec {
 export interface SceneScalars {
   /** Disorder/jitter — peaks during the "fracture" of Act I. */
   chaos: number;
+  /**
+   * System distress — a sustained plateau across the Chaos act that drives
+   * jitter, warning colors, broken edges, and erratic packet flow. Held high
+   * while the chaos copy is on screen, then released to 0 before reasoning.
+   */
+  danger: number;
   /** How wired the structure is (edges + forward packet flow). */
   structure: number;
   /** Verdict ignition — root cause glows, others dim. */
@@ -73,6 +87,7 @@ export interface SceneScalars {
 export function sceneScalars(p: number): SceneScalars {
   return {
     chaos: bump(p, 0.14, 0.13),
+    danger: smoothstep(0.04, 0.12, p) * (1 - smoothstep(0.34, 0.46, p)),
     structure: smoothstep(0.28, 0.6, p),
     verdict: smoothstep(0.66, 0.82, p),
     calm: smoothstep(0.85, 1, p),

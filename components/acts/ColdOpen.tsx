@@ -12,7 +12,7 @@ export function ColdOpen() {
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: EASE, delay: 0.9 }}
+        transition={{ duration: 1, ease: EASE, delay: 2.3 }}
         className="mb-7 font-mono text-[11px] uppercase tracking-[0.42em] text-signal/70"
       >
         AM Shift · engineering intelligence
@@ -23,7 +23,7 @@ export function ColdOpen() {
           className="block"
           initial={{ opacity: 0, y: 26, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 1.1, ease: EASE, delay: 1.15 }}
+          transition={{ duration: 1.2, ease: EASE, delay: 2.55 }}
         >
           The operating system
         </motion.span>
@@ -31,7 +31,7 @@ export function ColdOpen() {
           className="block bg-gradient-to-b from-white to-white/55 bg-clip-text text-transparent"
           initial={{ opacity: 0, y: 26, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 1.1, ease: EASE, delay: 1.32 }}
+          transition={{ duration: 1.2, ease: EASE, delay: 2.75 }}
         >
           for engineering intelligence.
         </motion.span>
@@ -40,7 +40,7 @@ export function ColdOpen() {
       <motion.p
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: EASE, delay: 1.85 }}
+        transition={{ duration: 1, ease: EASE, delay: 3.2 }}
         className="mt-8 max-w-2xl text-balance text-base leading-relaxed text-dim sm:text-lg"
       >
         AM Shift sends collaborative AI agents into your distributed systems —
@@ -51,7 +51,7 @@ export function ColdOpen() {
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: EASE, delay: 2.2 }}
+        transition={{ duration: 1, ease: EASE, delay: 3.55 }}
         className="mt-11 flex flex-wrap items-center justify-center gap-4"
       >
         <Button href="#invitation">Request a demo</Button>
@@ -63,7 +63,7 @@ export function ColdOpen() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 2.7 }}
+        transition={{ duration: 1, delay: 4 }}
         className="absolute bottom-10 flex flex-col items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-faint"
       >
         Scroll to investigate

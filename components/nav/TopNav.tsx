@@ -8,7 +8,7 @@ export function TopNav() {
     <motion.header
       initial={{ opacity: 0, y: -12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 2.6 }}
+      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 3.7 }}
       className="fixed inset-x-0 top-0 z-30 flex items-center justify-between px-6 py-5 sm:px-10"
     >
       <a
