@@ -198,10 +198,12 @@ with no smoothing, inheriting the wheel's coarse chunks. Tuning, not a rebuild.
 **Changes (`DawnEnvironment` only):**
 - **Eased scroll-follow (the fix):** replaced the scroll-throttled "set vars from
   scrollY" with a persistent rAF loop that eases a smoothed progress toward the
-  scroll target each frame (`cur += (target − cur) * 0.08`) and renders the world
+  scroll target each frame (`cur += (target − cur) * EASE`) and renders the world
   from `cur`. The world now glides continuously even when input arrives stepped.
   The loop parks itself once settled and re-arms on scroll/resize. Reduced-motion
-  → `EASE = 1` (snaps, no smoothing lag).
+  → `EASE = 1` (snaps, no smoothing lag). Feel-tuned `EASE = 0.12` (measured
+  hand→world trailing lag 139 ms; 0.08 was 207 ms / too floaty) for an
+  Apple/Stripe-tight coupling that still smooths the wheel and stays cinematic.
 - **GPU-composited light motion:** the camera's horizontal drift moved off the
   gradient's `at <x>%` position (which repainted every frame) onto a single
   `translate3d(var(--lightx), var(--lighty), 0)` with `will-change: transform`;

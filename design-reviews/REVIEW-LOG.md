@@ -203,7 +203,13 @@ Protect the restraint and the now-continuous spine. This is the right architectu
 
 ---
 
-## Finding v0.3-F1 — 2026-06-28 — Scroll feels janky / "not smooth" (Sprint 3 DawnEnvironment)
+## Finding v0.3-F1 — 🟢 RESOLVED @ Sprint 3.1 (v0.3-sprint3.1)
+
+Verified objectively in-browser: after an INSTANT scroll jump 0→3600px, the dawn warmth var (`--w`) eased through 45 distinct interpolated values over 45 frames (0.28→0.37→0.67→0.79→0.86→…→0.98), a decelerating glide = the `(target-cur)*0.08` follow working (not a 1-frame snap). Supporting fix confirmed: the moving light layer now has `will-change: transform` + a translate matrix with NO gradient on it (GPU-composited drift; gradient pinned; only hue repaints). Reduced-motion path EASE=1 (snap) respects opt-out. Stepping cause eliminated. One judgment call left to client: 0.08 is on the dreamier side — raise toward 0.10–0.12 if the trail feels laggy rather than glidey (single knob).
+
+---
+
+## Finding v0.3-F1 (original) — 2026-06-28 — Scroll feels janky / "not smooth" (Sprint 3 DawnEnvironment)
 
 Client reports scrolling up/down is not smooth. Diagnosed in-browser — this is NOT the architecture (continuity is good); it is missing scroll smoothing + repaint cost.
 

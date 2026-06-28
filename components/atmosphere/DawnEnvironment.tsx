@@ -54,7 +54,7 @@ export function DawnEnvironment() {
     if (!root) return;
 
     // Eased follow: snap instantly for reduced-motion, glide otherwise.
-    const EASE = reduced ? 1 : 0.08;
+    const EASE = reduced ? 1 : 0.12;
     let target = 0; // scroll progress 0..1 (the input)
     let cur = 0; // smoothed progress (what we render)
     let raf = 0;
