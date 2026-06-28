@@ -1,52 +1,112 @@
-import { SystemCanvas } from "@/components/system/SystemCanvas";
-import { TopNav } from "@/components/nav/TopNav";
-import { ColdOpen } from "@/components/acts/ColdOpen";
-import { ScrollAct } from "@/components/acts/ScrollAct";
-import { Verdict } from "@/components/acts/Verdict";
-import { Invitation } from "@/components/acts/Invitation";
+import { FloatingNav } from "@/components/nav/FloatingNav";
+import { PanelStack } from "@/components/panels/PanelStack";
+import { Panel } from "@/components/panels/Panel";
+import { HeroFirstLight } from "@/components/hero/HeroFirstLight";
+import { Button } from "@/components/ui/Button";
+
+/**
+ * v0.3 Sprint 1 — SKELETON.
+ * Floating pill nav + layered sticky-panel choreography + hero shell.
+ * Panels 1–3 and the verdict are placeholders here; full composition lands in
+ * Sprints 3–4. The five-beat narrative order is preserved.
+ */
+
+function Eyebrow({ children }: { children: string }) {
+  return (
+    <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.3em] text-dim">
+      {children}
+    </span>
+  );
+}
 
 export default function Home() {
   return (
     <>
-      {/* The protagonist — one persistent living system behind every act. */}
-      <SystemCanvas />
-      <TopNav />
+      <FloatingNav />
 
-      <main className="relative">
-        {/* Act 0 — Cold open */}
-        <ColdOpen />
+      <PanelStack>
+        <HeroFirstLight />
 
-        {/* Act I — Chaos */}
-        <ScrollAct
-          caption="incident · 02:14:07"
-          heading="Distributed systems fail in ways no human can trace."
-          sub="A thousand signals scatter across services, queues, and logs. By the time you've found them, the page is already down."
-          align="left"
-        />
+        {/* Beat 1 — Problem (cool register) */}
+        <Panel id="problem" className="bg-panel-cool">
+          <div className="max-w-3xl text-center">
+            <Eyebrow>the problem</Eyebrow>
+            <h2 className="font-display text-[clamp(2rem,5vw,3.6rem)] font-medium leading-[1.08] tracking-[-0.03em]">
+              Engineering systems are too complex for humans{" "}
+              <span className="font-serif font-normal italic text-warm-strong">
+                alone
+              </span>
+              .
+            </h2>
+          </div>
+        </Panel>
 
-        {/* Act II — Awakening */}
-        <ScrollAct
-          caption="agents online"
-          heading="So AM Shift sends in a team of agents."
-          sub="Specialist AI agents — for logs, databases, APIs, and infrastructure — wake up and move on the incident together."
-          align="right"
-        />
+        {/* Beat 2 — The shift / agents (warm register) */}
+        <Panel
+          id="shift"
+          className="bg-panel-warm"
+          style={{
+            background:
+              "radial-gradient(120% 80% at 50% 30%, #1a140c 0%, #14110b 55%, #0d0b08 100%)",
+          }}
+        >
+          <div className="max-w-3xl text-center">
+            <Eyebrow>the shift</Eyebrow>
+            <h2 className="font-display text-[clamp(2rem,5vw,3.6rem)] font-medium leading-[1.08] tracking-[-0.03em]">
+              So AM Shift sends in a{" "}
+              <span className="font-serif font-normal italic text-warm-strong">
+                team
+              </span>{" "}
+              of agents.
+            </h2>
+          </div>
+        </Panel>
 
-        {/* Act III — Reasoning */}
-        <ScrollAct
-          id="reasoning"
-          caption="correlating evidence"
-          heading="They investigate every layer at once — and resolve the conflicts."
-          sub="Evidence from each system is normalized, cross-checked, and reasoned over. The noise collapses into a single line of inquiry."
-          align="left"
-        />
+        {/* Beat 3 — Reasoning (cool register) */}
+        <Panel id="reasoning" className="bg-panel-cool">
+          <div className="max-w-3xl text-center">
+            <Eyebrow>reasoning</Eyebrow>
+            <h2 className="font-display text-[clamp(2rem,5vw,3.6rem)] font-medium leading-[1.08] tracking-[-0.03em]">
+              They investigate every layer — and agree on one{" "}
+              <span className="font-serif font-normal italic text-warm-strong">
+                answer
+              </span>
+              .
+            </h2>
+          </div>
+        </Panel>
 
-        {/* Act IV — Resolution */}
-        <Verdict />
+        {/* Beat 5 — Final CTA (warm register) */}
+        <Panel
+          id="cta"
+          className="bg-panel-warm"
+          style={{
+            background:
+              "radial-gradient(120% 90% at 50% 70%, #1a140c 0%, #100d09 60%, #08070b 100%)",
+          }}
+        >
+          <div className="flex max-w-3xl flex-col items-center text-center">
+            <h2 className="font-display text-[clamp(2.2rem,6vw,4.4rem)] font-medium leading-[1.04] tracking-[-0.03em]">
+              Stop searching logs. Start{" "}
+              <span className="font-serif font-normal italic text-warm-strong">
+                shifting
+              </span>{" "}
+              operations.
+            </h2>
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+              <Button href="#">Get early access</Button>
+              <Button href="#" variant="ghost">
+                Request a demo
+              </Button>
+            </div>
+          </div>
+        </Panel>
+      </PanelStack>
 
-        {/* Act V — Invitation */}
-        <Invitation />
-      </main>
+      {/* TEMPORARY build marker — remove before release. */}
+      <div className="pointer-events-none fixed bottom-3 left-3 z-50 font-mono text-[10px] tracking-[0.2em] text-faint/50">
+        v0.3-sprint1
+      </div>
     </>
   );
 }
