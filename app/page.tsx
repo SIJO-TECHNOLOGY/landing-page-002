@@ -31,8 +31,8 @@ export default function Home() {
       <PanelStack>
         <HeroFirstLight />
 
-        {/* Beat 1 — Problem · coldest/darkest (uncertainty) · upper-right */}
-        <Panel id="problem" atmosphere={<Atmosphere warmth={0.05} sunX={28} />}>
+        {/* Beat 1 — Problem · cold valley (deep blue / uncertainty) · upper-right */}
+        <Panel id="problem" atmosphere={<Atmosphere warmth={0} sunX={28} />}>
           <div className="ml-auto max-w-xl self-start pt-[19vh] text-right">
             <Eyebrow>the problem</Eyebrow>
             <h2 className={HEADING}>
@@ -100,7 +100,7 @@ export default function Home() {
 
       {/* TEMPORARY build marker — remove before release. */}
       <div className="pointer-events-none fixed bottom-3 left-3 z-50 font-mono text-[10px] tracking-[0.2em] text-faint/50">
-        v0.3-sprint1.5
+        v0.3-sprint1.7
       </div>
     </>
   );

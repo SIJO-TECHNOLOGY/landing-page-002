@@ -1,117 +1,99 @@
 /**
- * Atmosphere — the static visual WORLD behind each panel.
+ * Atmosphere — the static visual WORLD behind each panel (Sprint 1.7).
  *
- * A cinematic dawn landscape rendered entirely with layered CSS gradients and
- * blurred silhouette forms (NO animation, NO particles): deep sky → volumetric
- * dawn light at a horizon → haze band → silhouetted monolith forms with
- * foreground/background depth → atmospheric fog → vignette.
+ * Pure atmospheric abstraction — NO objects, NO architectural forms, NO blurred
+ * foreground shapes. Depth comes from real atmospheric perspective: a broad
+ * volumetric light plane at the horizon, layered haze fields with opacity
+ * falloff (denser/nearer low, fainter/farther high), graded gradient recession,
+ * and foreground density. Built entirely from CSS gradients. No animation.
  *
- * `warmth` (0→1) drives the "First Light" progression across the page (dark
- * uncertainty → warm confidence); `sunX` moves the light source to break
- * symmetry per panel.
+ * `warmth` (0→1) drives the "First Light" progression AND the light's hue
+ * (cold blue at 0 → warm gold at 1), so low-warmth panels read as a genuine
+ * cold valley; `sunX` moves the light source to break symmetry per panel.
  */
 interface AtmosphereProps {
-  warmth?: number; // 0 cool/night → 1 warm dawn
-  sunX?: number; // % horizontal position of the dawn light
-  forms?: boolean;
+  warmth?: number; // 0 cold/night → 1 warm dawn
+  sunX?: number; // % horizontal position of the light plane
 }
 
-const HORIZON = 70; // % from top
+const HORIZON = 72; // % from top
 
-function warm(intensity: number, w: number): string {
-  return `rgba(255, ${Math.round(196 + w * 28)}, ${Math.round(150 + w * 18)}, ${intensity})`;
+/** Light hue recedes from cold blue (warmth 0) to warm gold (warmth 1). */
+function light(w: number, a: number): string {
+  const r = Math.round(120 + 135 * w);
+  const g = Math.round(152 + 48 * w);
+  const b = Math.round(212 - 62 * w);
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
 }
 
-interface Mono {
-  x: number;
-  w: number;
-  h: number;
-  depth: number; // 1 = near/sharp/dark, 0 = far/hazy
-}
-
-const MONOS: readonly Mono[] = [
-  { x: 14, w: 8, h: 24, depth: 0.85 },
-  { x: 27, w: 5, h: 15, depth: 0.5 },
-  { x: 70, w: 10, h: 30, depth: 1 },
-  { x: 84, w: 6, h: 19, depth: 0.62 },
-  { x: 50, w: 4, h: 11, depth: 0.35 },
-];
-
-function Forms({ warmth, sunX }: { warmth: number; sunX: number }) {
-  return (
-    <>
-      {MONOS.map((m, i) => {
-        const litLeft = sunX <= m.x;
-        const rim = warm(0.05 + warmth * 0.22, warmth);
-        const body = `rgba(4, 6, 11, ${0.72 + m.depth * 0.22})`;
-        return (
-          <div
-            key={i}
-            style={{
-              position: "absolute",
-              left: `${m.x}%`,
-              bottom: `${100 - HORIZON}%`,
-              width: `${m.w}%`,
-              height: `${m.h}%`,
-              transform: "translateX(-50%)",
-              borderRadius: "8px 8px 0 0",
-              background: `linear-gradient(${litLeft ? 90 : 270}deg, ${rim} 0%, ${body} 24%, ${body} 100%)`,
-              filter: `blur(${(1 - m.depth) * 2.4}px)`,
-              opacity: 0.55 + m.depth * 0.4,
-            }}
-          />
-        );
-      })}
-    </>
-  );
-}
-
-export function Atmosphere({ warmth = 0.2, sunX = 50, forms = true }: AtmosphereProps) {
-  const horizonBand = `rgb(${Math.round(16 + warmth * 58)}, ${Math.round(15 + warmth * 24)}, ${Math.round(20 + warmth * 4)})`;
-  const below = `rgb(${Math.round(9 + warmth * 30)}, ${Math.round(9 + warmth * 14)}, ${Math.round(13)})`;
+export function Atmosphere({ warmth = 0.2, sunX = 50 }: AtmosphereProps) {
+  const w = warmth;
+  const ground = `rgb(${Math.round(8 + w * 18)}, ${Math.round(11 + w * 8)}, ${Math.round(19 - w * 9)})`;
+  const cold = Math.max(0, 0.45 - w) * 0.6; // cold-valley wash, only at low warmth
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* Sky → warm horizon → ground */}
+      {/* Sky → ground recession */}
       <div
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(180deg, #05070d 0%, #070b14 ${HORIZON - 22}%, ${horizonBand} ${HORIZON + 5}%, ${below} 100%)`,
+          background: `linear-gradient(180deg, #05070e 0%, #060912 ${HORIZON - 28}%, ${ground} 100%)`,
         }}
       />
-      {/* Volumetric dawn light rising at the horizon */}
+
+      {/* Volumetric light plane at the horizon (broad, soft) */}
       <div
         className="absolute inset-0"
         style={{
-          background: `radial-gradient(56% 44% at ${sunX}% ${HORIZON + 3}%, ${warm(0.1 + warmth * 0.55, warmth)} 0%, ${warm(0.04 + warmth * 0.16, warmth)} 32%, transparent 66%)`,
+          background: `radial-gradient(72% 34% at ${sunX}% ${HORIZON + 2}%, ${light(w, 0.1 + w * 0.5)} 0%, ${light(w, 0.03 + w * 0.14)} 38%, transparent 70%)`,
         }}
       />
-      {/* Haze band across the horizon */}
+
+      {/* Distant haze field — farther, fainter (atmospheric recession) */}
+      <div
+        className="absolute inset-x-0"
+        style={{
+          top: `${HORIZON - 19}%`,
+          height: "18%",
+          background: `linear-gradient(180deg, transparent, ${light(w, 0.04 + w * 0.05)} 60%, transparent)`,
+        }}
+      />
+      {/* Nearer haze field — lower, denser */}
       <div
         className="absolute inset-x-0"
         style={{
           top: `${HORIZON - 8}%`,
-          height: "20%",
-          background: `linear-gradient(180deg, transparent, ${warm(0.06 + warmth * 0.12, warmth)} 45%, transparent)`,
-          filter: "blur(10px)",
+          height: "17%",
+          background: `linear-gradient(180deg, transparent, ${light(w, 0.07 + w * 0.11)} 50%, transparent)`,
         }}
       />
-      {/* Silhouetted forms on the horizon */}
-      {forms && <Forms warmth={warmth} sunX={sunX} />}
-      {/* High atmospheric fog for depth above the horizon */}
+
+      {/* Cold uncertainty wash — deep blue, only in low-warmth panels */}
+      {cold > 0.01 && (
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(180deg, rgba(22,50,104,${cold}) 0%, rgba(18,40,86,${cold * 0.5}) 55%, transparent 86%)`,
+          }}
+        />
+      )}
+
+      {/* Foreground atmospheric density — near space reads darker/clearer */}
       <div
-        className="absolute inset-x-0 top-0"
+        className="absolute inset-x-0 bottom-0"
         style={{
-          height: `${HORIZON}%`,
-          background: `linear-gradient(180deg, transparent 38%, rgba(120,140,180,${0.03 + warmth * 0.025}) 100%)`,
+          height: "42%",
+          background:
+            "linear-gradient(180deg, transparent, rgba(0,0,0,0.34) 100%)",
         }}
       />
-      {/* Cinematic vignette — foreground framing */}
+
+      {/* Cinematic vignette */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(125% 95% at 50% 36%, transparent 50%, rgba(0,0,0,0.58) 100%)",
+            "radial-gradient(125% 95% at 50% 36%, transparent 50%, rgba(0,0,0,0.55) 100%)",
         }}
       />
     </div>

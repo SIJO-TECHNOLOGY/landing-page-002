@@ -85,6 +85,30 @@ asymmetric composition; build passes.
 `components/panels/Panel.tsx`, `components/hero/HeroFirstLight.tsx`,
 `app/page.tsx`.
 
+### Sprint 1.7 — Atmosphere refinement
+
+Refine the static world only (no motion, no structural/copy/nav/type changes).
+
+**Changes**
+- **Removed monolith forms entirely** — no towers/skyline/slabs/architecture.
+  Replaced with pure atmospheric abstraction: a broad volumetric light plane,
+  layered haze fields, translucent spatial gradients.
+- **Real atmospheric-perspective depth** — no blurred foreground objects.
+  Depth now comes from graded haze with opacity falloff (denser/nearer low,
+  fainter/farther high), gradient recession, and foreground density.
+- **Cold valley** — light hue now recedes cold-blue (warmth 0) → warm-gold
+  (warmth 1), and a deep-blue "uncertainty wash" activates at low warmth.
+  Problem set to warmth 0 (was 0.05) → emotionally colder than the hero
+  (0.22). Curve: hero 0.22 → problem 0 → shift 0.42 → reasoning 0.6 → CTA 0.92.
+- Marker → `v0.3-sprint1.7`.
+
+**Verified (headless):** no architectural forms anywhere; spatial atmospheric
+depth on every panel; a clear cold-blue Problem valley vs. warm hero/CTA; build
+passes.
+
+**Files:** `components/atmosphere/Atmosphere.tsx` (rewritten),
+`components/hero/HeroFirstLight.tsx` (warmth), `app/page.tsx` (Problem warmth).
+
 ### Rollback
 - To the canvas direction: `git checkout v0.2.1-canvas-final`.
 - To the original baseline: `git checkout v0.1-foundation-freeze`.
