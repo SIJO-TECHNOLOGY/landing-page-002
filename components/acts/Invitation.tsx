@@ -24,7 +24,7 @@ export function Invitation() {
           Autonomous, collaborative AI agents for the engineering teams running
           mission-critical distributed systems.
         </p>
-        <div className="mt-3 flex flex-wrap items-center justify-center gap-4">
+        <div className="mt-3 flex w-full flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
           <Button href="#">Get early access</Button>
           <Button href="#" variant="ghost">
             Request a demo
@@ -32,7 +32,7 @@ export function Invitation() {
         </div>
       </Reveal>
 
-      <footer className="absolute bottom-8 flex w-full items-center justify-between px-6 font-mono text-[10px] uppercase tracking-[0.28em] text-faint sm:px-12">
+      <footer className="absolute bottom-6 flex w-full flex-col items-center gap-1 px-6 text-center font-mono text-[10px] uppercase tracking-[0.28em] text-faint sm:bottom-8 sm:flex-row sm:justify-between sm:gap-0 sm:px-12">
         <span>AM Shift</span>
         <span>engineering intelligence · 2026</span>
       </footer>

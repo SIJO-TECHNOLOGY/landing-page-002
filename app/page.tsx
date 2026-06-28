@@ -47,6 +47,11 @@ export default function Home() {
         {/* Act V — Invitation */}
         <Invitation />
       </main>
+
+      {/* TEMPORARY build marker (Sprint 1.1) — remove before release. */}
+      <div className="pointer-events-none fixed bottom-3 left-3 z-50 font-mono text-[10px] tracking-[0.2em] text-faint/50">
+        v0.2-sprint1.1
+      </div>
     </>
   );
 }

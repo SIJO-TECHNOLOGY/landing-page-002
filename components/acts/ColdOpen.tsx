@@ -52,7 +52,7 @@ export function ColdOpen() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: EASE, delay: 3.55 }}
-        className="mt-11 flex flex-wrap items-center justify-center gap-4"
+        className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-11 sm:gap-4"
       >
         <Button href="#invitation">Request a demo</Button>
         <Button href="#reasoning" variant="ghost">
@@ -64,7 +64,7 @@ export function ColdOpen() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 4 }}
-        className="absolute bottom-10 flex flex-col items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-faint"
+        className="absolute bottom-10 hidden flex-col items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-faint sm:flex"
       >
         Scroll to investigate
         <motion.span

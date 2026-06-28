@@ -65,3 +65,53 @@ verdict card, overall architecture, component structure.
 - Full revert to baseline: `git checkout v0.1-foundation-freeze`
 - Rollback remains safe — all Sprint 1 work is isolated on the
   `cinematic-refinement-v2` branch; the baseline commit and tag are untouched.
+
+---
+
+## v0.2-cinematic-refinement — Sprint 1.1 (correction pass)
+
+Correction of Sprint 1 execution. Verified the live build first (a stale build
+was causing the "text at frame zero" reports): the served HTML renders the
+headline at `opacity:0`, and headless captures confirm t=250ms / t=1400ms show
+NO text — only darkness and the awakening system — with the headline resolving
+~2.5s+. A temporary `v0.2-sprint1.1` marker (bottom-left, mono, low opacity)
+was added so reviewers can confirm they're on the right build.
+
+### Changes
+- **Cold open** — held the seed longer, slowed the outward cascade (second
+  node responds at ~0.18 of the intro), so the system clearly awakens before
+  any words. Headline/sub/CTA remain withheld until ~2.5s+.
+- **Agent arrival** — added an expanding **scan-sweep ring** per agent after
+  landing, bigger flare, and pathway activation; retimed the trigger to p≈0.42
+  so danger has cleared and the awakening reads as a distinct event, not chaos.
+- **Hero → Chaos handoff (softened)** — `danger` now starts at p≈0.20 and
+  ramps gently, peaking deep in the act (~p 0.33) then releasing by ~p 0.42.
+  No more instant overload on the first scroll.
+- **Chaos discipline (premium restraint)** — removed full-screen confetti and
+  any red-on-blue (no pink); warnings are now **amber-only and localized** to
+  stressed infrastructure nodes (sources + coordinator). Broken links flicker
+  only along real edges, only deep in chaos. Lower density overall.
+- **Mobile** — reduced particle/packet density, dropped broken links and node
+  labels, smaller flares, hid the scroll hint, tightened hero + final-CTA
+  spacing.
+- **Scroll sync** — adaptive smoothing: elegant lag on small moves, fast
+  catch-up on fast scroll so text and canvas stay in sync.
+
+### Files modified
+- `components/system/SystemCanvas.tsx` — staged cold-open tuning, scan sweep,
+  localized/amber-only chaos, mobile density, adaptive smoothing.
+- `lib/scene.ts` — retimed the `danger` scalar (later start, earlier release).
+- `components/acts/ColdOpen.tsx` — mobile CTA spacing, hide scroll hint on
+  mobile.
+- `components/acts/Invitation.tsx` — final-CTA + footer spacing on mobile.
+- `components/nav/TopNav.tsx` — (Sprint 1) nav delay retained.
+- `app/page.tsx` — TEMPORARY `v0.2-sprint1.1` build marker.
+
+### Explicitly NOT touched
+Root-cause/verdict sequence, verdict card, final CTA content, packet trails,
+color progression, tempo contrast, non-hero section transitions, architecture,
+component structure.
+
+### Rollback
+Still safe — `git checkout v0.1-foundation-freeze`. All work remains on
+`cinematic-refinement-v2`; baseline commit + tag untouched.

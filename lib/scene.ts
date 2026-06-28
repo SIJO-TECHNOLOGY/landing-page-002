@@ -69,9 +69,10 @@ export interface SceneScalars {
   /** Disorder/jitter — peaks during the "fracture" of Act I. */
   chaos: number;
   /**
-   * System distress — a sustained plateau across the Chaos act that drives
-   * jitter, warning colors, broken edges, and erratic packet flow. Held high
-   * while the chaos copy is on screen, then released to 0 before reasoning.
+   * System distress. Begins as gentle unease just after the hero handoff,
+   * builds to a peak deep in the Chaos act, then fully releases BEFORE the
+   * agents arrive — so the hero→chaos transition is soft and the awakening
+   * reads as a distinct, calm event rather than more chaos.
    */
   danger: number;
   /** How wired the structure is (edges + forward packet flow). */
@@ -87,7 +88,7 @@ export interface SceneScalars {
 export function sceneScalars(p: number): SceneScalars {
   return {
     chaos: bump(p, 0.14, 0.13),
-    danger: smoothstep(0.04, 0.12, p) * (1 - smoothstep(0.34, 0.46, p)),
+    danger: smoothstep(0.2, 0.33, p) * (1 - smoothstep(0.37, 0.43, p)),
     structure: smoothstep(0.28, 0.6, p),
     verdict: smoothstep(0.66, 0.82, p),
     calm: smoothstep(0.85, 1, p),
