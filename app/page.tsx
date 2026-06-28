@@ -100,7 +100,7 @@ export default function Home() {
 
       {/* TEMPORARY build marker — remove before release. */}
       <div className="pointer-events-none fixed bottom-3 left-3 z-50 font-mono text-[10px] tracking-[0.2em] text-faint/50">
-        v0.3-sprint3
+        v0.3-sprint3.1
       </div>
     </>
   );

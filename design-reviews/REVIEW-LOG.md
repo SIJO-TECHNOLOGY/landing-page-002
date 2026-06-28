@@ -178,4 +178,43 @@ Protect luxury/restraint throughout — but on this review, continuity is the on
 
 ---
 
+## Review v0.3-R6 — 2026-06-28 — Sprint 3 "Continuity Architecture" (7e23a41), CONTINUITY-FIRST
+
+Builder replaced the architecture (removed Panel/PanelStack/per-panel Atmosphere → single fixed DawnEnvironment + transparent normal-flow Beats). Re-tested the SAME seam (progress 0.13) that exposed the cover/reveal in R5, plus mid (0.50) and CTA (1.0).
+
+**Finding — the fix is real, not a tune.** At 0.13: the hard horizontal panel boundary is GONE. Hero ("intelligence…") drifts up and fades at top while "Modern systems fail" enters from the bottom, both over ONE unbroken gradient — cross-dissolve over a continuous surface, no edge, no occlusion. Across the scroll the dawn is one persistent environment that evolves: cold blue (hero/problem) → silver light band rising (shift, 0.50) → full warm-gold dawn horizon (CTA, 1.0). The cold→warm spine is now the literal visible backbone.
+
+**Continuity-first scorecard (was R5 in parens):**
+| Dimension | Weight | Score |
+|---|---|---|
+| Scroll continuity | 40% | **8.0** (4.5) — seams eliminated; cross-dissolve over one continuous world. Caveat: content still arrives as discrete read-then-fade beats; the WORLD is continuous, the cadence is beat-by-beat. |
+| Spatial persistence | 25% | **8.5** (4.0) — one dawn environment persists across the entire scroll and continuously evolves; nothing is replaced. |
+| Composition transformation | 20% | **7.5** (4.5) — the world (rising/warming light) transforms continuously; text repositions gently and dissolves through it rather than arriving in fixed surfaces. |
+| Hero emotional impact | 10% | **7.0** (7.0) — unchanged; bloom still subtle. |
+| Motion discipline | 5% | **9.0** (9.0) — one dominant motion (the dawn); text drifts subtly. |
+
+**Weighted overall ≈ 8.0/10 (was 4.9). PASSES the primary criterion.**
+
+**Verdict: A− / strong B+ — continuity now works.** It reads as traveling through one evolving dawn rather than sections replacing one another. The R5 architectural failure is resolved. Remaining work is TUNING on the new model, not structure:
+1. **Content cadence** — statements still read as discrete beats that fade in/out; tie their emergence/dissolve more to the light/camera so they feel born from the world. (Possible "empty-world lull" between beats — confirm in motion it breathes rather than waits.)
+2. **Camera travel** — make forward motion slightly more pronounced so it's felt as travel, not only fade+warm.
+3. **Hero ceiling** — first 2–3s still has headroom (bloom magnitude, activate the empty right side).
+Protect the restraint and the now-continuous spine. This is the right architecture — refine, don't rebuild.
+
+---
+
+## Finding v0.3-F1 — 2026-06-28 — Scroll feels janky / "not smooth" (Sprint 3 DawnEnvironment)
+
+Client reports scrolling up/down is not smooth. Diagnosed in-browser — this is NOT the architecture (continuity is good); it is missing scroll smoothing + repaint cost.
+
+Evidence: DawnEnvironment driven by inline vars `--w/--sunx/--lighty` rewritten directly from raw scrollY each scroll event. `transitionDuration: 0s` on container + all gradient layers; `animationTimeline: auto` (no GPU scroll-timeline); no Lenis/smooth-scroll; `willChange: auto` on full-viewport oklab gradient layers.
+
+Two causes:
+1. **No temporal smoothing (primary).** World maps 1:1 to RAW scroll → snaps to each wheel/trackpad chunk instead of gliding. The old canvas had this (`pSmooth += (target-pSmooth)*0.08`); the new model dropped it. This is the eased-follow / Lenis layer that makes Stripe/Apple/Fixa feel buttery.
+2. **Per-frame full-screen repaint (amplifier).** Each frame rewrites vars feeding multiple full-viewport oklab gradients → non-compositable full-screen repaint, no will-change → visible stutter on any dropped frame.
+
+Directive (experience/technical-direction, not code): (a) add an eased scroll-follow — interpolate a smoothed value toward target scroll each rAF and drive the dawn from THAT, or add a Lenis-style smooth-scroll layer; (b) move the light's POSITION via transform (translate/scale, GPU) rather than repainting gradient stops; add `will-change: transform` to the moving layer; reserve warmth/color changes to be cheap or lightly transitioned (~120–200ms damping); (c) note `scroll-behavior: smooth` on html is irrelevant to wheel input. Primary lever = (a).
+
+---
+
 <!-- Next review appended below. -->
