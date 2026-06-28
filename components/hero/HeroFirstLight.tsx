@@ -1,41 +1,24 @@
 import { Panel } from "@/components/panels/Panel";
+import { Atmosphere } from "@/components/atmosphere/Atmosphere";
 import { Button } from "@/components/ui/Button";
 
 /**
- * HeroFirstLight — Sprint 1 SHELL of the "First Light" hero.
+ * HeroFirstLight — the "First Light" hero (Sprint 1.5).
  *
- * Concept: dawn over a dark system — deep night warming to a band of first
- * light on the horizon ("AM" = morning; light = clarity replacing manual dark).
- * This sprint ships the static composition + placeholder warm light; Sprint 2
- * adds the animated light loop and the staged cold open.
+ * Concept: just before dawn over a dark world. The composition is asymmetric
+ * (content low-left, light low-right) for cinematic depth. Copy leads with
+ * emotional confidence — NO product/infrastructure language here.
  */
 export function HeroFirstLight() {
   return (
-    <Panel
-      id="hero"
-      rounded={false}
-      style={{
-        background:
-          "linear-gradient(180deg, #070b14 0%, #0b1220 52%, #120f0a 100%)",
-      }}
-    >
-      {/* Placeholder "first light" — warm dawn band rising from the horizon. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%]"
-        style={{
-          background:
-            "radial-gradient(130% 90% at 50% 125%, rgba(242,184,115,0.30) 0%, rgba(242,184,115,0.08) 38%, transparent 68%)",
-        }}
-      />
-
-      <div className="relative z-10 flex flex-col items-center text-center">
-        <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.32em] text-warm-strong/80">
+    <Panel id="hero" rounded={false} atmosphere={<Atmosphere warmth={0.2} sunX={64} />}>
+      <div className="mr-auto max-w-2xl self-end pb-[15vh] text-left">
+        <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.32em] text-warm-strong/80 backdrop-blur-sm">
           <span aria-hidden className="h-1 w-1 rounded-full bg-warm" />
           AM Shift
         </span>
 
-        <h1 className="max-w-4xl font-display text-[clamp(2.6rem,7vw,5.6rem)] font-medium leading-[1.03] tracking-[-0.03em]">
+        <h1 className="font-display text-[clamp(2.8rem,7vw,5.8rem)] font-medium leading-[1.0] tracking-[-0.035em] [text-shadow:0_2px_40px_rgba(0,0,0,0.45)]">
           The operating system for engineering{" "}
           <span className="font-serif font-normal italic text-warm-strong">
             intelligence
@@ -43,10 +26,8 @@ export function HeroFirstLight() {
           .
         </h1>
 
-        <p className="mt-8 max-w-2xl text-balance text-base leading-relaxed text-dim sm:text-lg">
-          AM Shift sends collaborative AI agents into your distributed systems —
-          Kafka, databases, logs, Kubernetes — to find root causes in minutes,
-          not hours.
+        <p className="mt-7 max-w-md text-lg leading-relaxed text-white/70 [text-shadow:0_1px_20px_rgba(0,0,0,0.5)]">
+          Clarity, the instant everything breaks.
         </p>
 
         <div className="mt-10">

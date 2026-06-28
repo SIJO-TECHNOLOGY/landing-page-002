@@ -1,23 +1,27 @@
 import { FloatingNav } from "@/components/nav/FloatingNav";
 import { PanelStack } from "@/components/panels/PanelStack";
 import { Panel } from "@/components/panels/Panel";
+import { Atmosphere } from "@/components/atmosphere/Atmosphere";
 import { HeroFirstLight } from "@/components/hero/HeroFirstLight";
 import { Button } from "@/components/ui/Button";
 
 /**
- * v0.3 Sprint 1 — SKELETON.
- * Floating pill nav + layered sticky-panel choreography + hero shell.
- * Panels 1–3 and the verdict are placeholders here; full composition lands in
- * Sprints 3–4. The five-beat narrative order is preserved.
+ * v0.3 Sprint 1.5 — visual WORLD + asymmetric composition + First Light
+ * progression (dark uncertainty → warm confidence). No animation; the
+ * environment is built from static atmospheric layers. Product/infra language
+ * is kept out of the hero and surfaces mid-page (Reasoning).
  */
 
 function Eyebrow({ children }: { children: string }) {
   return (
-    <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.3em] text-dim">
+    <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.3em] text-dim backdrop-blur-sm">
       {children}
     </span>
   );
 }
+
+const HEADING =
+  "font-display text-[clamp(2rem,5vw,3.7rem)] font-medium leading-[1.06] tracking-[-0.03em] [text-shadow:0_2px_40px_rgba(0,0,0,0.45)]";
 
 export default function Home() {
   return (
@@ -27,32 +31,25 @@ export default function Home() {
       <PanelStack>
         <HeroFirstLight />
 
-        {/* Beat 1 — Problem (cool register) */}
-        <Panel id="problem" className="bg-panel-cool">
-          <div className="max-w-3xl text-center">
+        {/* Beat 1 — Problem · coldest/darkest (uncertainty) · upper-right */}
+        <Panel id="problem" atmosphere={<Atmosphere warmth={0.05} sunX={28} />}>
+          <div className="ml-auto max-w-xl self-start pt-[19vh] text-right">
             <Eyebrow>the problem</Eyebrow>
-            <h2 className="font-display text-[clamp(2rem,5vw,3.6rem)] font-medium leading-[1.08] tracking-[-0.03em]">
-              Engineering systems are too complex for humans{" "}
+            <h2 className={HEADING}>
+              Modern systems fail in ways no one person can{" "}
               <span className="font-serif font-normal italic text-warm-strong">
-                alone
+                trace
               </span>
               .
             </h2>
           </div>
         </Panel>
 
-        {/* Beat 2 — The shift / agents (warm register) */}
-        <Panel
-          id="shift"
-          className="bg-panel-warm"
-          style={{
-            background:
-              "radial-gradient(120% 80% at 50% 30%, #1a140c 0%, #14110b 55%, #0d0b08 100%)",
-          }}
-        >
-          <div className="max-w-3xl text-center">
+        {/* Beat 2 — The shift · first warmth · lower-left */}
+        <Panel id="shift" atmosphere={<Atmosphere warmth={0.42} sunX={40} />}>
+          <div className="mr-auto max-w-xl self-end pb-[16vh] text-left">
             <Eyebrow>the shift</Eyebrow>
-            <h2 className="font-display text-[clamp(2rem,5vw,3.6rem)] font-medium leading-[1.08] tracking-[-0.03em]">
+            <h2 className={HEADING}>
               So AM Shift sends in a{" "}
               <span className="font-serif font-normal italic text-warm-strong">
                 team
@@ -62,36 +59,34 @@ export default function Home() {
           </div>
         </Panel>
 
-        {/* Beat 3 — Reasoning (cool register) */}
-        <Panel id="reasoning" className="bg-panel-cool">
-          <div className="max-w-3xl text-center">
+        {/* Beat 3 — Reasoning · warming · center-right · product clarity here */}
+        <Panel id="reasoning" atmosphere={<Atmosphere warmth={0.6} sunX={66} />}>
+          <div className="ml-auto max-w-xl self-center text-right">
             <Eyebrow>reasoning</Eyebrow>
-            <h2 className="font-display text-[clamp(2rem,5vw,3.6rem)] font-medium leading-[1.08] tracking-[-0.03em]">
+            <h2 className={HEADING}>
               They investigate every layer — and agree on one{" "}
               <span className="font-serif font-normal italic text-warm-strong">
                 answer
               </span>
               .
             </h2>
+            <p className="mt-6 ml-auto max-w-md text-base leading-relaxed text-white/65">
+              Across logs, databases, message queues, and infrastructure, AM
+              Shift correlates every signal into a single root cause — in
+              minutes, not hours.
+            </p>
           </div>
         </Panel>
 
-        {/* Beat 5 — Final CTA (warm register) */}
-        <Panel
-          id="cta"
-          className="bg-panel-warm"
-          style={{
-            background:
-              "radial-gradient(120% 90% at 50% 70%, #1a140c 0%, #100d09 60%, #08070b 100%)",
-          }}
-        >
-          <div className="flex max-w-3xl flex-col items-center text-center">
-            <h2 className="font-display text-[clamp(2.2rem,6vw,4.4rem)] font-medium leading-[1.04] tracking-[-0.03em]">
-              Stop searching logs. Start{" "}
+        {/* Beat 5 — Final CTA · full warm dawn (confidence) · center-low */}
+        <Panel id="cta" atmosphere={<Atmosphere warmth={0.92} sunX={50} />}>
+          <div className="mx-auto flex max-w-3xl flex-col items-center self-center text-center">
+            <h2 className="font-display text-[clamp(2.4rem,6vw,4.6rem)] font-medium leading-[1.03] tracking-[-0.035em] [text-shadow:0_2px_40px_rgba(0,0,0,0.45)]">
+              Stop searching. Start{" "}
               <span className="font-serif font-normal italic text-warm-strong">
                 shifting
-              </span>{" "}
-              operations.
+              </span>
+              .
             </h2>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
               <Button href="#">Get early access</Button>
@@ -105,7 +100,7 @@ export default function Home() {
 
       {/* TEMPORARY build marker — remove before release. */}
       <div className="pointer-events-none fixed bottom-3 left-3 z-50 font-mono text-[10px] tracking-[0.2em] text-faint/50">
-        v0.3-sprint1
+        v0.3-sprint1.5
       </div>
     </>
   );

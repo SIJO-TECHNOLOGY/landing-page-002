@@ -54,6 +54,37 @@ cool→warm register shift; mobile hero. `npm run build` passes.
 full Problem/Shift/Reasoning panels (S3); VerdictCard + Trust + Final CTA (S4);
 motion/reduced-motion/mobile/perf polish + panel depth dim/scale (S5).
 
+### Sprint 1.5 — Visual world (adjustment)
+
+Fixed the "beautiful typography in emptiness" problem: adopted Fixa's *soul*
+(immersive composition), not just its grammar. No new animation, no particles.
+
+**Changes**
+- **`Atmosphere`** (new) — a static cinematic dawn-landscape WORLD per panel,
+  built from layered CSS only: deep sky → volumetric dawn light → haze band →
+  silhouetted monolith forms with foreground/background depth → atmospheric
+  fog → vignette. Parametrized by `warmth` and `sunX`.
+- **First Light progression** — `warmth` ramps across the page (hero 0.2 →
+  problem 0.05 darkest/coolest → shift 0.42 → reasoning 0.6 → CTA 0.92 full
+  warm), so the experience evolves from dark uncertainty to warm confidence.
+- **Composition asymmetry** — `Panel` refactored to host the atmosphere behind
+  a free-form content layer; panels now break symmetry (hero low-left, problem
+  upper-right, shift low-left, reasoning center-right, CTA center) with real
+  foreground/background separation.
+- **De-engineered hero copy** — removed all infrastructure language from the
+  hero (no Kafka/Kubernetes/logs); hero now leads with emotional confidence
+  ("Clarity, the instant everything breaks."). Product/infra detail moved to
+  the mid-page Reasoning beat.
+- Marker → `v0.3-sprint1.5`.
+
+**Verified (headless):** atmospheric depth + monolith silhouettes + volumetric
+light on every panel; the dark→warm arc across hero→problem→reasoning→CTA;
+asymmetric composition; build passes.
+
+**Files:** `components/atmosphere/Atmosphere.tsx` (new),
+`components/panels/Panel.tsx`, `components/hero/HeroFirstLight.tsx`,
+`app/page.tsx`.
+
 ### Rollback
 - To the canvas direction: `git checkout v0.2.1-canvas-final`.
 - To the original baseline: `git checkout v0.1-foundation-freeze`.
