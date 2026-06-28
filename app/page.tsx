@@ -1,15 +1,14 @@
 import { FloatingNav } from "@/components/nav/FloatingNav";
-import { PanelStack } from "@/components/panels/PanelStack";
-import { Panel } from "@/components/panels/Panel";
-import { Atmosphere } from "@/components/atmosphere/Atmosphere";
+import { DawnEnvironment } from "@/components/atmosphere/DawnEnvironment";
+import { Beat } from "@/components/beats/Beat";
 import { HeroFirstLight } from "@/components/hero/HeroFirstLight";
 import { Button } from "@/components/ui/Button";
 
 /**
- * v0.3 Sprint 1.5 — visual WORLD + asymmetric composition + First Light
- * progression (dark uncertainty → warm confidence). No animation; the
- * environment is built from static atmospheric layers. Product/infra language
- * is kept out of the hero and surfaces mid-page (Reasoning).
+ * v0.3 Sprint 3 — Continuity architecture.
+ * One continuous evolving world (DawnEnvironment, fixed) + transparent beats
+ * that the camera travels through. No panels, no cover/reveal, no seams: the
+ * cold→warm dawn is the visible continuous backbone; statements cross-dissolve.
  */
 
 function Eyebrow({ children }: { children: string }) {
@@ -21,19 +20,20 @@ function Eyebrow({ children }: { children: string }) {
 }
 
 const HEADING =
-  "font-display text-[clamp(2rem,5vw,3.7rem)] font-medium leading-[1.06] tracking-[-0.03em] [text-shadow:0_2px_40px_rgba(0,0,0,0.45)]";
+  "font-display text-[clamp(2rem,5vw,3.7rem)] font-medium leading-[1.06] tracking-[-0.03em] [text-shadow:0_2px_44px_rgba(0,0,0,0.5)]";
 
 export default function Home() {
   return (
     <>
+      <DawnEnvironment />
       <FloatingNav />
 
-      <PanelStack>
+      <main className="relative">
         <HeroFirstLight />
 
-        {/* Beat 1 — Problem · cold valley (deep blue / uncertainty) · upper-right */}
-        <Panel id="problem" atmosphere={<Atmosphere warmth={0} sunX={28} />}>
-          <div className="ml-auto max-w-xl self-start pt-[19vh] text-right">
+        {/* Problem — cold valley · upper-right */}
+        <Beat id="problem">
+          <div className="ml-auto max-w-xl text-right">
             <Eyebrow>the problem</Eyebrow>
             <h2 className={HEADING}>
               Modern systems fail in ways no one person can{" "}
@@ -43,11 +43,11 @@ export default function Home() {
               .
             </h2>
           </div>
-        </Panel>
+        </Beat>
 
-        {/* Beat 2 — The shift · first warmth · lower-left */}
-        <Panel id="shift" atmosphere={<Atmosphere warmth={0.48} sunX={40} />}>
-          <div className="mr-auto max-w-xl self-end pb-[16vh] text-left">
+        {/* The shift · left */}
+        <Beat id="shift">
+          <div className="mr-auto max-w-xl text-left">
             <Eyebrow>the shift</Eyebrow>
             <h2 className={HEADING}>
               So AM Shift sends in a{" "}
@@ -57,11 +57,11 @@ export default function Home() {
               of agents.
             </h2>
           </div>
-        </Panel>
+        </Beat>
 
-        {/* Beat 3 — Reasoning · warming · center-right · product clarity here */}
-        <Panel id="reasoning" atmosphere={<Atmosphere warmth={0.68} sunX={66} />}>
-          <div className="ml-auto max-w-xl self-center text-right">
+        {/* Reasoning · right · product clarity */}
+        <Beat id="reasoning">
+          <div className="ml-auto max-w-xl text-right">
             <Eyebrow>reasoning</Eyebrow>
             <h2 className={HEADING}>
               They investigate every layer — and agree on one{" "}
@@ -70,18 +70,18 @@ export default function Home() {
               </span>
               .
             </h2>
-            <p className="mt-6 ml-auto max-w-md text-base leading-relaxed text-white/65">
+            <p className="ml-auto mt-6 max-w-md text-base leading-relaxed text-white/65">
               Across logs, databases, message queues, and infrastructure, AM
               Shift correlates every signal into a single root cause — in
               minutes, not hours.
             </p>
           </div>
-        </Panel>
+        </Beat>
 
-        {/* Beat 5 — Final CTA · full warm dawn (confidence) · center-low */}
-        <Panel id="cta" atmosphere={<Atmosphere warmth={0.98} sunX={50} />}>
-          <div className="mx-auto flex max-w-3xl flex-col items-center self-center text-center">
-            <h2 className="font-display text-[clamp(2.4rem,6vw,4.6rem)] font-medium leading-[1.03] tracking-[-0.035em] [text-shadow:0_2px_40px_rgba(0,0,0,0.45)]">
+        {/* Final CTA · full warm dawn · center */}
+        <Beat id="cta">
+          <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
+            <h2 className="font-display text-[clamp(2.4rem,6vw,4.6rem)] font-medium leading-[1.03] tracking-[-0.035em] [text-shadow:0_2px_44px_rgba(0,0,0,0.5)]">
               Stop searching. Start{" "}
               <span className="font-serif font-normal italic text-warm-strong">
                 shifting
@@ -95,12 +95,12 @@ export default function Home() {
               </Button>
             </div>
           </div>
-        </Panel>
-      </PanelStack>
+        </Beat>
+      </main>
 
       {/* TEMPORARY build marker — remove before release. */}
       <div className="pointer-events-none fixed bottom-3 left-3 z-50 font-mono text-[10px] tracking-[0.2em] text-faint/50">
-        v0.3-sprint2.5
+        v0.3-sprint3
       </div>
     </>
   );

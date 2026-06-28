@@ -162,7 +162,35 @@ deeper — dim more (opacity 0.55→0.4) and a touch more scale (0.96→0.945).
 **Verified (headless):** t=0 genuinely dark → gradual bloom → stronger settled
 warm presence (text static throughout); stronger warm CTA; build passes.
 
+## v0.3 — Sprint 3 (continuity architecture)
+
+Continuity review scored the cover/reveal model a failing ~4.9 — every sticky
+panel seam read as a scene cut, and self-contained per-panel backgrounds made
+spatial persistence impossible. This is the architectural replacement (approved).
+
+**One Continuous Dawn** — replace the per-panel cover/reveal with one evolving
+world:
+- **`DawnEnvironment`** (new): a single `fixed` full-viewport surface rendered
+  once, evolving continuously with global scroll via 3 CSS variables
+  (`--w` warmth, `--sunx`, `--lighty`) set in a rAF-throttled scroll handler.
+  The cold→warm spine + the rising/drifting light are now the visible
+  continuous backbone — **no panel edges, ever**. `color-mix` carries the
+  continuous cold-blue↔warm-gold hue. Cold-open bloom on load (`dawnBloom`
+  keyframes).
+- **`Beat`** (new): transparent, normal-flow content sections over the fixed
+  world — no background, no sticky, no seam. Subtle scroll-linked reposition +
+  cross-dissolve so statements melt into one another (the camera travels;
+  text drifts gently). Reduced-motion → static.
+- **Removed:** `Panel`, `PanelStack`, per-panel `Atmosphere` (the cover/reveal).
+- `HeroFirstLight` is now content-only; `page.tsx` = `DawnEnvironment` + a
+  single column of `Beat`s. Marker `v0.3-sprint3`.
+
+**Verified (headless):** the old seam zone now shows two statements
+cross-dissolving over one unbroken environment (no edge); cold open dark→bloom;
+continuous cold→warm to a full warm CTA; build passes.
+
 ### Rollback
+- To the beautiful panels state (pre-continuity): `git checkout v0.3.2-panels-final`.
 - To the canvas direction: `git checkout v0.2.1-canvas-final`.
 - To the original baseline: `git checkout v0.1-foundation-freeze`.
-- Both are untouched; v0.3 is isolated on its own branch.
+- All untouched; v0.3 is isolated on its own branch.

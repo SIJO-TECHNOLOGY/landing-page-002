@@ -150,4 +150,32 @@ Build unchanged (5172ceb); only the standard changed. Re-observed all four seams
 
 ---
 
+## Review v0.3-R5 — 2026-06-28 — Sprint 2.5, CONTINUITY-FIRST review (client weighting v2)
+
+Client tightened the lens: review ONLY continuity. Ignore typo/luxury/nav/enterprise/composition-beauty (already strong). Method: fine-scrub of the hero→Problem seam (progress 0.07 / 0.13 / 0.18) to judge transition mechanics, not settled panels.
+
+**Finding:** seam mechanism UNCHANGED from Sprint 2. Each panel carries its own self-contained dark background surface; at every seam the next panel **slides up and covers** the pinned, dimming previous panel. At 0.13 a **visible horizontal boundary line** crosses mid-screen (Problem's surface occluding the hero). That boundary IS the scene cut. Nothing from the environment persists across it except the fixed nav (chrome). The cold→warm color arc is the only thing evolving across the whole scroll, but it's slow/subtle and the hard per-panel boundaries dominate perception.
+
+**Continuity-first scorecard:**
+| Dimension | Weight | Score |
+|---|---|---|
+| Scroll continuity | 40% | **4.5** — cover/reveal with visible panel boundaries = scene cuts. Pinned+dim layering adds faint depth but reads as "panel covering panel," not one space. |
+| Spatial persistence | 25% | **4.0** — near none; each panel self-contained, hard seam boundary, only the fixed nav persists. |
+| Composition transformation | 20% | **4.5** — composition RESETS per panel (occlusion, not morph). |
+| Hero emotional impact | 10% | **7.0** — premium/confident; bloom still subtle (unchanged). |
+| Motion discipline | 5% | **9.0** — restrained, clean (but now 5%). |
+
+**Weighted overall ≈ 4.9/10. FAILS the primary criterion.**
+
+**Verdict: C (on the primary axis) — continuity still fails. Beautiful, but it reads as sections replacing one another.** Sprint 2.5 did not change the cover/reveal architecture; nudging motion will not fix it. This is architectural.
+
+**Directives (continuity-first, experience goals):**
+1. **Kill the visible panel boundary.** The dawn/atmosphere must be ONE continuous surface spanning the whole scroll that evolves — not a stack of per-panel backgrounds occluding each other. You should never see a new panel's top edge arrive.
+2. **Persist & morph elements across beats.** The light, and ideally a shared compositional anchor, should carry from one statement to the next and transform — so beats dissolve into each other, not cut.
+3. **Make transitions transformations of one space** (camera moving through it / light advancing / type morphing position), not one surface covering another.
+4. **The cold→warm arc is the right spine** — make it the VISIBLE continuous backbone with no hard edges interrupting it.
+Protect luxury/restraint throughout — but on this review, continuity is the only thing that counts, and it is not yet there.
+
+---
+
 <!-- Next review appended below. -->

@@ -90,8 +90,26 @@ body {
   border-radius: 4px;
 }
 
+/* Cold open — the first light blooms in once, on load (darkness → dawn). */
+@keyframes dawnBloom {
+  from {
+    opacity: 0;
+    transform: translateY(64px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.dawn-bloom {
+  animation: dawnBloom 5.6s cubic-bezier(0.42, 0, 0.2, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .dawn-bloom {
+    animation: none;
   }
 }
