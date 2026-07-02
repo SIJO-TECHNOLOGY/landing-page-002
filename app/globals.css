@@ -15,10 +15,20 @@
   --color-ok: #34d399;
   --color-warn: #f59e0b;
 
+  /* v0.3 "First Light" — warm counter-tone for depth (no light panels) */
+  --color-warm: #f2b873;
+  --color-warm-strong: #ffd9a0;
+  --color-warm-dark: #15110c;
+
+  /* Layered-panel registers (cool ↔ warm dark) */
+  --color-panel-cool: #0b1220;
+  --color-panel-warm: #14110b;
+
   /* Type roles */
   --font-display: var(--font-geist-sans);
   --font-body: var(--font-inter);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-instrument-serif);
 }
 
 html {
@@ -80,8 +90,26 @@ body {
   border-radius: 4px;
 }
 
+/* Cold open — the first light blooms in once, on load (darkness → dawn). */
+@keyframes dawnBloom {
+  from {
+    opacity: 0;
+    transform: translateY(64px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.dawn-bloom {
+  animation: dawnBloom 5.6s cubic-bezier(0.42, 0, 0.2, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .dawn-bloom {
+    animation: none;
   }
 }
