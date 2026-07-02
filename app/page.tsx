@@ -1,56 +1,106 @@
-import { SystemCanvas } from "@/components/system/SystemCanvas";
-import { TopNav } from "@/components/nav/TopNav";
-import { ColdOpen } from "@/components/acts/ColdOpen";
-import { ScrollAct } from "@/components/acts/ScrollAct";
-import { Verdict } from "@/components/acts/Verdict";
-import { Invitation } from "@/components/acts/Invitation";
+import { FloatingNav } from "@/components/nav/FloatingNav";
+import { DawnEnvironment } from "@/components/atmosphere/DawnEnvironment";
+import { Beat } from "@/components/beats/Beat";
+import { HeroFirstLight } from "@/components/hero/HeroFirstLight";
+import { Button } from "@/components/ui/Button";
+
+/**
+ * v0.3 Sprint 3 — Continuity architecture.
+ * One continuous evolving world (DawnEnvironment, fixed) + transparent beats
+ * that the camera travels through. No panels, no cover/reveal, no seams: the
+ * cold→warm dawn is the visible continuous backbone; statements cross-dissolve.
+ */
+
+function Eyebrow({ children }: { children: string }) {
+  return (
+    <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.3em] text-dim backdrop-blur-sm">
+      {children}
+    </span>
+  );
+}
+
+const HEADING =
+  "font-display text-[clamp(2rem,5vw,3.7rem)] font-medium leading-[1.06] tracking-[-0.03em] [text-shadow:0_2px_44px_rgba(0,0,0,0.5)]";
 
 export default function Home() {
   return (
     <>
-      {/* The protagonist — one persistent living system behind every act. */}
-      <SystemCanvas />
-      <TopNav />
+      <DawnEnvironment />
+      <FloatingNav />
 
       <main className="relative">
-        {/* Act 0 — Cold open */}
-        <ColdOpen />
+        <HeroFirstLight />
 
-        {/* Act I — Chaos */}
-        <ScrollAct
-          caption="incident · 02:14:07"
-          heading="Distributed systems fail in ways no human can trace."
-          sub="A thousand signals scatter across services, queues, and logs. By the time you've found them, the page is already down."
-          align="left"
-        />
+        {/* Problem — cold valley · upper-right */}
+        <Beat id="problem">
+          <div className="ml-auto max-w-xl text-right">
+            <Eyebrow>the problem</Eyebrow>
+            <h2 className={HEADING}>
+              Modern systems fail in ways no one person can{" "}
+              <span className="font-serif font-normal italic text-warm-strong">
+                trace
+              </span>
+              .
+            </h2>
+          </div>
+        </Beat>
 
-        {/* Act II — Awakening */}
-        <ScrollAct
-          caption="agents online"
-          heading="So AM Shift sends in a team of agents."
-          sub="Specialist AI agents — for logs, databases, APIs, and infrastructure — wake up and move on the incident together."
-          align="right"
-        />
+        {/* The shift · left */}
+        <Beat id="shift">
+          <div className="mr-auto max-w-xl text-left">
+            <Eyebrow>the shift</Eyebrow>
+            <h2 className={HEADING}>
+              So AM Shift sends in a{" "}
+              <span className="font-serif font-normal italic text-warm-strong">
+                team
+              </span>{" "}
+              of agents.
+            </h2>
+          </div>
+        </Beat>
 
-        {/* Act III — Reasoning */}
-        <ScrollAct
-          id="reasoning"
-          caption="correlating evidence"
-          heading="They investigate every layer at once — and resolve the conflicts."
-          sub="Evidence from each system is normalized, cross-checked, and reasoned over. The noise collapses into a single line of inquiry."
-          align="left"
-        />
+        {/* Reasoning · right · product clarity */}
+        <Beat id="reasoning">
+          <div className="ml-auto max-w-xl text-right">
+            <Eyebrow>reasoning</Eyebrow>
+            <h2 className={HEADING}>
+              They investigate every layer — and agree on one{" "}
+              <span className="font-serif font-normal italic text-warm-strong">
+                answer
+              </span>
+              .
+            </h2>
+            <p className="ml-auto mt-6 max-w-md text-base leading-relaxed text-white/65">
+              Across logs, databases, message queues, and infrastructure, AM
+              Shift correlates every signal into a single root cause — in
+              minutes, not hours.
+            </p>
+          </div>
+        </Beat>
 
-        {/* Act IV — Resolution */}
-        <Verdict />
-
-        {/* Act V — Invitation */}
-        <Invitation />
+        {/* Final CTA · full warm dawn · center */}
+        <Beat id="cta">
+          <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
+            <h2 className="font-display text-[clamp(2.4rem,6vw,4.6rem)] font-medium leading-[1.03] tracking-[-0.035em] [text-shadow:0_2px_44px_rgba(0,0,0,0.5)]">
+              Stop searching. Start{" "}
+              <span className="font-serif font-normal italic text-warm-strong">
+                shifting
+              </span>
+              .
+            </h2>
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+              <Button href="#">Get early access</Button>
+              <Button href="#" variant="ghost">
+                Request a demo
+              </Button>
+            </div>
+          </div>
+        </Beat>
       </main>
 
-      {/* TEMPORARY build marker (Sprint 1.1) — remove before release. */}
+      {/* TEMPORARY build marker — remove before release. */}
       <div className="pointer-events-none fixed bottom-3 left-3 z-50 font-mono text-[10px] tracking-[0.2em] text-faint/50">
-        v0.2-sprint1.1
+        v0.3-sprint3.1
       </div>
     </>
   );
