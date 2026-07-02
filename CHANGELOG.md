@@ -216,6 +216,35 @@ values across 45 frames (was an instant 1-frame jump) — warmth eases through t
 cold valley and climbs smoothly; `--lighty` glides 16%→−19.85% on the composited
 transform; build passes.
 
+## SIJO rebrand (sijo-v1)
+
+The validated v0.3 continuous-dawn design, rebranded for **SIJO**
+(sijo.fr — cabinet de conseil IT, banque & finance). Design, motion, and
+architecture untouched; content, language, and brand assets remapped.
+
+**Changes**
+- **Brand assets:** real `Logo.svg`/`Favicon.svg` fetched from sijo.fr.
+  Logo navy (#131A3D) recolored off-white for the dark world (blues kept);
+  favicon → `app/icon.svg`. Accent tokens retuned to SIJO blues
+  (#1f60f3 / #5d89ef). Template SVGs removed.
+- **Language:** `lang="fr"`, French metadata (title "SIJO — Le cabinet qui
+  pense à vous").
+- **Narrative (consultant-led):** hero = SIJO's tagline ("Le cabinet qui pense
+  à *vous*."); cold valley = "Dans le conseil, trop de talents avancent
+  *seuls*."; shift = "SIJO a fait le choix du *collectif*."; engagements =
+  the four values + suivi mensuel/formations/CAC-40 clients paragraph;
+  CTA = "Construisons l'avenir, *ensemble*." with Nous rejoindre (LinkedIn) /
+  Nous contacter (mailto) + quiet contact line (address · phone · email).
+- **Bug fix (DawnEnvironment):** the Sprint 3.1 composited translate could
+  expose the light layer's right edge at high scroll (hard vertical seam).
+  Layer widened to 150% (`-inset-x-1/4`) with drift + gradient geometry
+  rescaled so the at-rest composition is unchanged.
+- Marker → `sijo-v1`.
+
+**Verified (headless):** hero/constat/engagements/CTA at 1440×900 — logo in
+nav, French copy, cold valley, full-width warm dawn at CTA (no edge), contact
+line; build passes.
+
 ### Rollback
 - To the beautiful panels state (pre-continuity): `git checkout v0.3.2-panels-final`.
 - To the canvas direction: `git checkout v0.2.1-canvas-final`.

@@ -69,7 +69,9 @@ export function DawnEnvironment() {
       // Warmth hue (paint) — eased follow keeps the step tiny per frame.
       root.style.setProperty("--w", warmthAt(p).toFixed(4));
       // Camera drift + sun rise ride ONE composited transform (no repaint).
-      root.style.setProperty("--lightx", `${(-20 * p).toFixed(2)}%`);
+      // translateX % is relative to the 150%-wide layer → scale to keep the
+      // same on-screen drift (-20vw max).
+      root.style.setProperty("--lightx", `${((-20 * p) / 1.5).toFixed(2)}%`);
       root.style.setProperty("--lighty", `${(16 - 56 * p).toFixed(2)}%`);
     };
 
@@ -140,7 +142,8 @@ export function DawnEnvironment() {
           blooms once (inner). The outer transform is the ONLY thing that moves
           per frame — GPU-composited, no gradient-position repaint. */}
       <div
-        className="absolute inset-0"
+        // 150% wide: the -20% max horizontal drift can never expose an edge.
+        className="absolute inset-y-0 -left-1/4 -right-1/4"
         style={{
           transform: "translate3d(var(--lightx), var(--lighty), 0)",
           willChange: "transform",
@@ -153,7 +156,8 @@ export function DawnEnvironment() {
             style={{
               opacity: "calc(0.25 + var(--w) * 0.62)",
               background:
-                "radial-gradient(74% 36% at 62% 74%, color-mix(in oklab, #ffd49c calc(var(--w) * 100%), #6f93cc) 0%, transparent 70%)",
+                // 58% of the 150%-wide layer = 62% of the viewport at rest.
+                "radial-gradient(50% 36% at 58% 74%, color-mix(in oklab, #ffd49c calc(var(--w) * 100%), #6f93cc) 0%, transparent 70%)",
             }}
           />
           {/* Distant haze field */}
