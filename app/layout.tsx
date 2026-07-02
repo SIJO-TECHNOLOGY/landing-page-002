@@ -26,9 +26,9 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "AM Shift — The operating system for engineering intelligence",
+  title: "SIJO — Le cabinet qui pense à vous",
   description:
-    "Collaborative AI agents that investigate your distributed systems — Kafka, databases, logs, Kubernetes — to find root causes in minutes, not hours.",
+    "Cabinet de conseil IT en banque et finance. L'intelligence et la force du collectif au service de votre carrière et des projets des plus grandes institutions financières.",
 };
 
 export default function RootLayout({
@@ -38,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="fr"
       className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
       <body className="grain min-h-full bg-bg text-text">{children}</body>

@@ -223,4 +223,32 @@ Directive (experience/technical-direction, not code): (a) add an eased scroll-fo
 
 ---
 
+## Review v0.3-R7 — 2026-06-28 — Sprint 3.1 full continuity-first re-review (v0.3-sprint3.1)
+
+Architecture unchanged from Sprint 3 (continuous DawnEnvironment); Sprint 3.1 added eased scroll-follow + GPU light transform (F1 resolved). Re-observed hero / seam (0.13) / CTA; smoothness verified objectively (45-frame glide).
+
+**Continuity-first scorecard (R6 → R7):**
+| Dimension | Weight | R6 | R7 |
+|---|---|---|---|
+| Scroll continuity | 40% | 8.0 | **8.5** — world is continuous AND now glides (eased follow); no stepping, no seams. Held under 9 by discrete content cadence + dreamy 0.08. |
+| Spatial persistence | 25% | 8.5 | **8.5** — one dawn persists/evolves end-to-end. |
+| Composition transformation | 20% | 7.5 | **7.5** — world transforms continuously & smoothly; text still repositions only subtly. |
+| Hero emotional impact | 10% | 7.0 | **7.0** — unchanged; bloom subtle (low weight now). |
+| Motion discipline | 5% | 9.0 | **9.0** — restrained + now smooth. |
+
+**Weighted overall ≈ 8.2/10 (was 8.0). Best score of the project.**
+
+**Verdict: A− / strong B+ — continuity now works and glides.** The smoothness fix converted the architecture win into a felt one. The page reads as traveling through one evolving dawn.
+
+**Remaining gap to 9+ (all refinement on the right model, in client-priority order):**
+1. **Content cadence (continuity, 40%):** statements still arrive as discrete read-then-fade beats. Tie their emergence/dissolve to the light/camera so they feel *born from* the world. Watch for empty-world lulls between beats.
+2. **Camera travel (continuity + composition):** make forward motion more pronounced so it reads as *moving through space*, not only fade+warm.
+3. **0.08 glide constant:** client to feel — if it reads dreamy/laggy rather than connected, nudge to 0.10–0.12.
+4. **Hero (10%):** first 2–3s headroom — bloom magnitude, activate the quiet right side.
+Protect the continuous spine, the restraint, and the new glide.
+
+NB: AM Shift dev server (port 3000) keeps dying between sessions; restarted twice this review. Port 3001 = AceByte (separate project, not reviewed).
+
+---
+
 <!-- Next review appended below. -->
